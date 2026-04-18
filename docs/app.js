@@ -466,7 +466,7 @@
     const { flags, tierCounts, words } = res;
     const density = words ? flags / words : 0;
     if (flags === 0) {
-      return `<span class="score-clean">clean.</span>&nbsp;no common ai patterns caught. worth a human read anyway.`;
+      return `<span class="score-clean">clean.</span>&nbsp;no common patterns caught. still read it yourself.`;
     }
     const bits = [];
     if (tierCounts.t1) bits.push(`${tierCounts.t1} tier-1 word${tierCounts.t1 > 1 ? "s" : ""}`);
