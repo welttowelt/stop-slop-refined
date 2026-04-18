@@ -1,179 +1,32 @@
 /* =====================================================
    stop slop — app.js
-   powers: theme toggle, hero demo cycle, live detector,
+   powers: theme toggle, hero demo cycle, quick detector,
            examples renderer, tier/pattern renderers,
            install tabs, copy buttons
    ===================================================== */
 
 (() => {
-  // ---------- curated subset used by the browser demo ----------
+  // ---------- canonical site data generated from references/*.md ----------
 
-  const TIER_1 = [
-    ["delve", "explore"], ["delve into", "look at"],
-    ["utilize", "use"],
-    ["robust", "strong"],
-    ["comprehensive", "complete"],
-    ["pivotal", "important"],
-    ["transformative", "describe what changed"],
-    ["landscape", "field"],
-    ["tapestry", "name the complexity"],
-    ["paradigm", "model"],
-    ["embark", "start"],
-    ["beacon", "rewrite"],
-    ["testament to", "shows"],
-    ["seamless", "smooth"],
-    ["impactful", "effective"],
-    ["actionable", "concrete"],
-    ["thought leader", "expert"],
-    ["best practices", "what works"],
-    ["in order to", "to"],
-    ["due to the fact that", "because"],
-    ["serves as", "is"],
-    ["boasts", "has"],
-    ["commence", "start"],
-    ["ascertain", "find out"],
-    ["endeavor", "effort"],
-    ["deep dive", "look at"],
-    ["unpack", "explain"],
-    ["ever-evolving", "changing"],
-    ["watershed moment", "turning point"],
-    ["at its core", "cut it"]
-  ];
+  const DATA = window.STOP_SLOP_DATA;
+  if (!DATA) throw new Error("STOP_SLOP_DATA is missing. Load site-data.js before app.js.");
 
-  const TIER_2 = [
-    ["harness", "use"],
-    ["navigate", "handle"],
-    ["elevate", "improve"],
-    ["empower", "enable"],
-    ["streamline", "simplify"],
-    ["bolster", "strengthen"],
-    ["spearhead", "lead"],
-    ["resonate", "connect"],
-    ["ecosystem", "network"],
-    ["myriad", "many"],
-    ["plethora", "many"],
-    ["encompass", "include"],
-    ["catalyze", "trigger"],
-    ["cultivate", "build"],
-    ["illuminate", "clarify"],
-    ["cornerstone", "foundation"],
-    ["paramount", "most important"],
-    ["poised", "ready"],
-    ["nascent", "early"],
-    ["overarching", "broad"],
-    ["augment", "add to"]
-  ];
+  const TIER_1 = DATA.tier1;
+  const TIER_2 = DATA.tier2;
+  const TIER_3 = DATA.tier3;
+  const OPENERS = DATA.openers;
+  const FILLERS = DATA.fillers;
+  const PATTERNS = DATA.patterns;
+  const DETECTOR_PATTERNS = (DATA.detectorPatterns || []).map(({ label, source, flags }) => ({
+    label,
+    re: new RegExp(source, flags)
+  }));
 
-  const TIER_3 = [
-    "significant", "effective", "dynamic", "scalable", "compelling",
-    "valuable", "key", "vital", "remarkable", "sophisticated"
-  ];
-
-  const OPENERS = [
-    "Certainly,", "Absolutely,", "Of course,", "Great question,",
-    "Moreover,", "Furthermore,", "Additionally,", "Importantly,", "Interestingly,"
-  ];
-
-  const FILLERS = [
-    "Here's the thing", "It turns out", "The truth is", "Let me be clear",
-    "It's worth noting", "At the end of the day", "When it comes to",
-    "In today's", "The future looks bright", "Only time will tell",
-    "As we move forward", "I hope this helps", "Let me know if",
-    "Without further ado", "In conclusion", "In summary"
-  ];
-
-  const PATTERNS = [
-    {
-      group: "sentence",
-      title: "binary contrast",
-      egHtml: `<code>not x, but y</code> · <code>the real issue is not x. it's y.</code>`,
-      fix: "state y directly."
-    },
-    {
-      group: "sentence",
-      title: "negative listing",
-      egHtml: `<code>not a tool. not a workflow. a mindset.</code>`,
-      fix: "say the actual point without the runway."
-    },
-    {
-      group: "sentence",
-      title: "rhetorical question transition",
-      egHtml: `<code>so why does this matter?</code> · <code>but what does this mean for teams?</code>`,
-      fix: "if you know the answer, say it."
-    },
-    {
-      group: "sentence",
-      title: "signposting",
-      egHtml: `<code>let's dive in</code> · <code>in this section</code> · <code>here's what you need to know</code>`,
-      fix: "cut the announcement and start with the point."
-    },
-    {
-      group: "sentence",
-      title: "reasoning-chain leakage",
-      egHtml: `<code>let me think step by step</code> · <code>working through this logically</code>`,
-      fix: "give the conclusion, then the reasoning."
-    },
-    {
-      group: "structural",
-      title: "rule of three everywhere",
-      egHtml: `too many triads make writing feel generated.`,
-      fix: "use one, two, or four when that fits better."
-    },
-    {
-      group: "structural",
-      title: "uniform sentence length",
-      egHtml: `three even sentences in a row is one of the clearest ai signals.`,
-      fix: "vary rhythm on purpose."
-    },
-    {
-      group: "structural",
-      title: "uniform paragraph shape",
-      egHtml: `claim · explanation · example · transition — on repeat.`,
-      fix: "vary openings, lengths, and landing points."
-    },
-    {
-      group: "structural",
-      title: "heading plus restatement",
-      egHtml: `<code>performance</code> → <em>performance matters.</em>`,
-      fix: "let the heading do its job."
-    },
-    {
-      group: "structural",
-      title: "list inflation",
-      egHtml: `<code>5 ways ai is changing x</code>, each bullet says almost nothing.`,
-      fix: "cut to the few points that actually matter."
-    },
-    {
-      group: "voice",
-      title: "false agency",
-      egHtml: `<code>the data tells us</code> · <code>the market decided</code>`,
-      fix: "name the human actor when the actor matters."
-    },
-    {
-      group: "voice",
-      title: "vague attribution",
-      egHtml: `<code>experts believe</code> · <code>research shows</code> · <code>industry observers note</code>`,
-      fix: "cite the source or cut the claim."
-    },
-    {
-      group: "voice",
-      title: "significance inflation",
-      egHtml: `<code>a pivotal moment in the evolution of</code> · <code>a testament to</code>`,
-      fix: "describe what happened and stop."
-    },
-    {
-      group: "voice",
-      title: "promotional description",
-      egHtml: `<code>vibrant hub</code> · <code>thriving ecosystem</code> · <code>nestled in</code>`,
-      fix: "describe the thing plainly."
-    },
-    {
-      group: "voice",
-      title: "emotional flatline",
-      egHtml: `<code>what surprised me most was</code> · <code>i was fascinated to discover</code>`,
-      fix: "let the content create the feeling."
-    }
-  ];
+  function expandWordEntries(entries) {
+    return entries.flatMap(([label, fix]) => (
+      label.split(/\s*\/\s*/).map(part => [part.trim(), fix])
+    ));
+  }
 
   const EXAMPLES = [
     {
@@ -324,34 +177,32 @@
   const esc = s => s.replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 
   // build lookup
-  const t1 = new Map(TIER_1.map(([w, f]) => [w.toLowerCase(), f]));
-  const t2 = new Map(TIER_2.map(([w, f]) => [w.toLowerCase(), f]));
+  const t1 = new Map(expandWordEntries(TIER_1).map(([w, f]) => [w.toLowerCase(), f]));
+  const t2 = new Map(expandWordEntries(TIER_2).map(([w, f]) => [w.toLowerCase(), f]));
   const t3 = new Set(TIER_3.map(w => w.toLowerCase()));
 
-  // phrase-style patterns (multi-word regex forms)
+  function escapeRegex(value) {
+    return value.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&");
+  }
+
+  function buildFillerRegexes() {
+    return FILLERS.map(label => {
+      const lower = label.toLowerCase();
+      if (lower === "in today's [x]") {
+        return { re: /\bin today'?s [\w-]+(?:\s[\w-]+)?\b/gi, label };
+      }
+      if (lower === "let me know if...") {
+        return { re: /\blet me know if\b/gi, label };
+      }
+      const source = `\\b${escapeRegex(lower).replace(/\s+/g, "\\s+")}\\b`;
+      return { re: new RegExp(source, "gi"), label };
+    });
+  }
+
+  // heuristics that are realistic to catch in-browser
   const PATTERN_REGEXES = [
-    { re: /\bnot (?:a )?[\w'-]+[,\.] (?:it'?s )?(?:a |but )[\w'-]+/gi, label: "binary contrast" },
-    { re: /\b(?:so why|but what|but how) (?:does|do|is|are) this/gi, label: "rhetorical transition" },
-    { re: /\blet's dive in(?:to)?\b/gi, label: "signposting" },
-    { re: /\bhere'?s what you need to know\b/gi, label: "signposting" },
-    { re: /\blet me think step by step\b/gi, label: "reasoning leakage" },
-    { re: /\b(?:the data|the market|the product|the complaint) (?:tells us|decided|became|knows)\b/gi, label: "false agency" },
-    { re: /\b(?:experts (?:believe|say)|research shows|industry observers note|studies show)\b/gi, label: "vague attribution" },
-    { re: /\b(?:vibrant|thriving|bustling) (?:hub|ecosystem|community)\b/gi, label: "promotional" },
-    { re: /\bwhat surprised me most was\b/gi, label: "emotional flatline" },
-    { re: /\bat the end of the day\b/gi, label: "filler" },
-    { re: /\bin today'?s [\w-]+(?:\s[\w-]+)?\b/gi, label: "filler opener" },
-    { re: /\bthe future looks bright\b/gi, label: "generic close" },
-    { re: /\bas we move forward\b/gi, label: "generic close" },
-    { re: /\bin conclusion\b/gi, label: "generic close" },
-    { re: /\bin summary\b/gi, label: "generic close" },
-    { re: /\bhere'?s the thing\b/gi, label: "throat-clearing" },
-    { re: /\bit turns out\b/gi, label: "filler" },
-    { re: /\bit'?s worth noting\b/gi, label: "filler" },
-    { re: /\blet that sink in\b/gi, label: "emphasis crutch" },
-    { re: /\bi hope this helps\b/gi, label: "chatbot artifact" },
-    { re: /\bgreat question[!\.]?/gi, label: "chatbot artifact" },
-    { re: /\b(?:certainly|absolutely|of course)[,!]/gi, label: "chatbot opener" }
+    ...DETECTOR_PATTERNS,
+    ...buildFillerRegexes()
   ];
 
   // tier-1 entries that are phrases, detected as regex
@@ -466,7 +317,7 @@
     const { flags, tierCounts, words } = res;
     const density = words ? flags / words : 0;
     if (flags === 0) {
-      return `<span class="score-clean">clean on this pass.</span>&nbsp;the demo did not catch anything in its subset. still read it yourself.`;
+      return `<span class="score-clean">clean on this pass.</span>&nbsp;the demo did not catch anything in the browser pass. still read it yourself.`;
     }
     const bits = [];
     if (tierCounts.t1) bits.push(`${tierCounts.t1} tier-1 word${tierCounts.t1 > 1 ? "s" : ""}`);
@@ -476,7 +327,7 @@
     const severity = density > 0.06 || tierCounts.pat >= 3 || tierCounts.t1 >= 4
       ? `<span class="score-strong">clear ai smell.</span>`
       : `<span class="score-neutral">mixed.</span>`;
-    return `${severity}&nbsp;${bits.join(" · ")} in the demo subset. full review still recommended.`;
+    return `${severity}&nbsp;${bits.join(" · ")} in the browser pass. full review still recommended.`;
   }
 
   function updateDetector() {
@@ -578,6 +429,10 @@
   const patHost = document.querySelector("[data-patterns]");
   if (patHost) {
     PATTERNS.forEach(p => {
+      const examplesHtml = (p.examples || []).length
+        ? `<p class="eg">${p.examples.map(example => `<code>${esc(example)}</code>`).join(" · ")}</p>`
+        : "";
+      const fixHtml = p.fix ? `<p class="fix-line"><b>fix</b>${esc(p.fix)}</p>` : "";
       const el = document.createElement("article");
       el.className = "pat";
       el.innerHTML = `
@@ -585,8 +440,8 @@
           <h3>${esc(p.title)}</h3>
           <span class="pat-group">${esc(p.group)}</span>
         </header>
-        <p class="eg">${p.egHtml}</p>
-        <p class="fix-line"><b>fix</b>${esc(p.fix)}</p>
+        ${examplesHtml}
+        ${fixHtml}
       `;
       patHost.appendChild(el);
     });

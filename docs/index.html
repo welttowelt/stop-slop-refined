@@ -233,7 +233,7 @@ In conclusion, the future looks bright as we move forward.</textarea>
           <li><span class="sw sw-open"></span> bad opener</li>
         </ul>
         <div class="det-score" data-det-score></div>
-        <p class="modes-note">this demo checks a curated subset of the rules. <code>SKILL.md</code> and the files under <code>references/</code> stay the source of truth.</p>
+        <p class="modes-note">this demo loads the canonical word lists and pattern cards from the repo. structural detection is still limited to browser-detectable heuristics.</p>
       </div>
     </div>
   </div>
@@ -441,10 +441,17 @@ use stop slop on this memo</code></pre>
       <header>repo contents</header>
 <pre><code>stop-slop-refined/
 ├── SKILL.md
+├── docs/
+│   ├── site-data.js
+│   ├── index.html
+│   ├── app.js
+│   └── styles.css
 ├── references/
 │   ├── words.md
 │   ├── patterns.md
 │   └── examples.md
+├── scripts/
+│   └── generate-site-data.mjs
 ├── ATTRIBUTION.md
 ├── LICENSE
 └── README.md</code></pre>
@@ -521,6 +528,7 @@ use stop slop on this memo</code></pre>
   </div>
 </footer>
 
+<script src="site-data.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

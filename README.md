@@ -19,10 +19,17 @@ This repo is intentionally generic. It does **not** include private overlays, pe
 ```text
 stop-slop-refined/
 ├── SKILL.md
+├── docs/
+│   ├── site-data.js
+│   ├── index.html
+│   ├── app.js
+│   └── styles.css
 ├── references/
 │   ├── words.md
 │   ├── patterns.md
 │   └── examples.md
+├── scripts/
+│   └── generate-site-data.mjs
 ├── ATTRIBUTION.md
 ├── LICENSE
 └── README.md
@@ -68,6 +75,14 @@ Examples:
 - no personal voice layer
 - no private company context
 - no influencer-style fluff in the skill itself
+
+## Maintaining the site data
+
+If you change `references/words.md` or `references/patterns.md`, regenerate the site data:
+
+```bash
+node scripts/generate-site-data.mjs
+```
 
 ## Credits
 
