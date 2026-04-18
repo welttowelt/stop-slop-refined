@@ -1,0 +1,26 @@
+name: site-data-sync
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  verify-site-data:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Regenerate canonical site data
+        run: node scripts/generate-site-data.mjs
+
+      - name: Fail if docs/site-data.js is stale
+        run: git diff --exit-code -- docs/site-data.js
