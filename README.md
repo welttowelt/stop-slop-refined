@@ -17,7 +17,7 @@ This repo is intentionally generic. It does **not** include private overlays, pe
 ## Repo contents
 
 ```text
-stop-slop-public/
+stop-slop-refined/
 ├── SKILL.md
 ├── references/
 │   ├── words.md
@@ -34,14 +34,14 @@ stop-slop-public/
 
 ```bash
 mkdir -p ~/.claude/skills
-cp -R stop-slop-public ~/.claude/skills/stop-slop
+git clone https://github.com/welttowelt/stop-slop-refined.git ~/.claude/skills/stop-slop
 ```
 
 ### Codex
 
 ```bash
 mkdir -p ~/.codex/skills
-cp -R stop-slop-public ~/.codex/skills/stop-slop
+git clone https://github.com/welttowelt/stop-slop-refined.git ~/.codex/skills/stop-slop
 ```
 
 ### ChatGPT or Claude projects

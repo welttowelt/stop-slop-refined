@@ -198,7 +198,7 @@
   <div class="wrap">
     <div class="sec-head">
       <span class="sec-num">§ 03</span>
-      <h2 id="det-title" class="sec-title">live detector.</h2>
+      <h2 id="det-title" class="sec-title">quick detector.</h2>
       <p class="sec-kicker">paste prose on the left. flags appear on the right.</p>
     </div>
 
@@ -233,6 +233,7 @@ In conclusion, the future looks bright as we move forward.</textarea>
           <li><span class="sw sw-open"></span> bad opener</li>
         </ul>
         <div class="det-score" data-det-score></div>
+        <p class="modes-note">this demo checks a curated subset of the rules. <code>SKILL.md</code> and the files under <code>references/</code> stay the source of truth.</p>
       </div>
     </div>
   </div>
@@ -406,13 +407,13 @@ In conclusion, the future looks bright as we move forward.</textarea>
         <div class="inst-pane active" data-inst-pane="claude">
           <pre><code><span class="c-comment"># ~/.claude/skills/stop-slop</span>
 mkdir -p ~/.claude/skills
-cp -R stop-slop-public ~/.claude/skills/stop-slop</code></pre>
+git clone https://github.com/welttowelt/stop-slop-refined.git ~/.claude/skills/stop-slop</code></pre>
           <button class="copy" type="button" data-copy>copy</button>
         </div>
         <div class="inst-pane" data-inst-pane="codex">
           <pre><code><span class="c-comment"># ~/.codex/skills/stop-slop</span>
 mkdir -p ~/.codex/skills
-cp -R stop-slop-public ~/.codex/skills/stop-slop</code></pre>
+git clone https://github.com/welttowelt/stop-slop-refined.git ~/.codex/skills/stop-slop</code></pre>
           <button class="copy" type="button" data-copy>copy</button>
         </div>
         <div class="inst-pane" data-inst-pane="projects">
@@ -438,7 +439,7 @@ use stop slop on this memo</code></pre>
 
     <div class="repo-tree">
       <header>repo contents</header>
-<pre><code>stop-slop-public/
+<pre><code>stop-slop-refined/
 ├── SKILL.md
 ├── references/
 │   ├── words.md

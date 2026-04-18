@@ -6,7 +6,7 @@
    ===================================================== */
 
 (() => {
-  // ---------- data pulled from references (verbatim entries) ----------
+  // ---------- curated subset used by the browser demo ----------
 
   const TIER_1 = [
     ["delve", "explore"], ["delve into", "look at"],
@@ -466,7 +466,7 @@
     const { flags, tierCounts, words } = res;
     const density = words ? flags / words : 0;
     if (flags === 0) {
-      return `<span class="score-clean">clean.</span>&nbsp;no common patterns caught. still read it yourself.`;
+      return `<span class="score-clean">clean on this pass.</span>&nbsp;the demo did not catch anything in its subset. still read it yourself.`;
     }
     const bits = [];
     if (tierCounts.t1) bits.push(`${tierCounts.t1} tier-1 word${tierCounts.t1 > 1 ? "s" : ""}`);
@@ -476,7 +476,7 @@
     const severity = density > 0.06 || tierCounts.pat >= 3 || tierCounts.t1 >= 4
       ? `<span class="score-strong">clear ai smell.</span>`
       : `<span class="score-neutral">mixed.</span>`;
-    return `${severity}&nbsp;${bits.join(" · ")}. rewrite recommended.`;
+    return `${severity}&nbsp;${bits.join(" · ")} in the demo subset. full review still recommended.`;
   }
 
   function updateDetector() {
