@@ -625,12 +625,18 @@ del {
 }
 
 .what-grid .num {
+  grid-row: 1 / span 2;
   color: var(--accent);
   font-family: var(--mono);
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.06em;
+}
+
+.what-grid h3,
+.what-grid p {
+  grid-column: 2;
 }
 
 .what-grid h3,
@@ -675,6 +681,10 @@ del {
 .tier p,
 .cred p {
   margin: 10px 0 0;
+}
+
+.what-grid p {
+  max-width: 32ch;
 }
 
 .pill {
