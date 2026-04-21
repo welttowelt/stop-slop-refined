@@ -95,20 +95,6 @@
     }
   ];
 
-  // ---------- theme toggle ----------
-
-  const root = document.documentElement;
-  const saved = localStorage.getItem("slop-theme");
-  if (saved) root.setAttribute("data-theme", saved);
-  else if (matchMedia("(prefers-color-scheme: dark)").matches) root.setAttribute("data-theme", "dark");
-
-  document.querySelector("[data-theme-toggle]")?.addEventListener("click", () => {
-    const current = root.getAttribute("data-theme") === "dark" ? "dark" : "light";
-    const next = current === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", next);
-    localStorage.setItem("slop-theme", next);
-  });
-
   // ---------- hero demo cycle ----------
 
   const heroBefore = document.querySelector("[data-demo-before]");
