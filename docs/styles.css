@@ -716,27 +716,60 @@ del {
 .modes-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
+  gap: 18px;
 }
 
 .mode {
-  padding: 22px 0 0;
-  border: 0;
-  border-top: 1px solid var(--line);
-  background: transparent;
+  min-height: 100%;
+  padding: 22px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 16%),
+    var(--surface);
+  display: grid;
+  gap: 16px;
 }
 
 .mode header,
 .sev header {
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.modes .sec-head {
+  align-items: center;
+}
+
+.modes .sec-title {
+  max-width: none;
+  font-size: clamp(3rem, 4.8vw, 5rem);
+}
+
+.modes .sec-kicker {
+  max-width: 32ch;
+}
+
+.mode-label {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  padding: 0 8px;
+  border: 1px solid rgba(232, 106, 45, 0.24);
+  background: rgba(232, 106, 45, 0.05);
+}
+
+.mode h3 {
+  font-size: clamp(2rem, 2.7vw, 2.6rem);
+  line-height: 0.96;
+  letter-spacing: -0.05em;
+  text-transform: uppercase;
 }
 
 .mode ul,
 .sev ul,
 .calib ul {
-  margin: 18px 0 0;
+  margin: 0;
   padding: 0;
   list-style: none;
 }
@@ -744,8 +777,8 @@ del {
 .mode li,
 .sev li,
 .calib li {
-  padding-top: 12px;
-  margin-top: 12px;
+  padding-top: 14px;
+  margin-top: 14px;
   border-top: 1px solid var(--line);
 }
 
@@ -758,22 +791,30 @@ del {
 }
 
 .mode footer {
-  margin-top: 20px;
+  margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--line);
-  align-items: center;
-  gap: 12px;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .mode footer code {
-  color: var(--text);
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  color: var(--body);
   font-size: 0.8rem;
+  line-height: 1.55;
+  white-space: normal;
 }
 
 .modes-note {
   margin: 18px 0 0;
-  max-width: 58ch;
+  max-width: 72ch;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
 }
 
 .kbd {
