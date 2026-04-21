@@ -549,14 +549,16 @@ del {
 }
 
 .section {
-  padding: 50px 0 64px;
+  padding: 72px 0 96px;
   border-top: 1px solid var(--line);
 }
 
 .sec-head {
   display: grid;
-  gap: 10px;
-  margin-bottom: 28px;
+  grid-template-columns: 88px minmax(0, 1.08fr) minmax(280px, 0.92fr);
+  gap: 10px 24px;
+  align-items: end;
+  margin-bottom: 42px;
 }
 
 .sec-num,
@@ -573,9 +575,10 @@ del {
 
 .sec-title {
   margin: 0;
-  max-width: 12ch;
+  grid-column: 2;
+  max-width: 8ch;
   color: var(--text);
-  font-size: clamp(2.2rem, 5vw, 4.8rem);
+  font-size: clamp(2.5rem, 5.4vw, 5.8rem);
   font-weight: 700;
   line-height: 0.92;
   letter-spacing: -0.06em;
@@ -584,9 +587,10 @@ del {
 
 .sec-kicker {
   margin: 0;
-  max-width: 54ch;
+  grid-column: 3;
+  max-width: 34ch;
   color: var(--body);
-  font-size: 1rem;
+  font-size: 1.02rem;
 }
 
 .what-grid,
@@ -600,8 +604,8 @@ del {
 
 .what-grid {
   display: grid;
-  grid-template-columns: repeat(10, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0 28px;
 }
 
 .what-grid li {
@@ -609,13 +613,15 @@ del {
   display: grid;
   grid-template-columns: 72px minmax(0, 1fr);
   gap: 16px;
-  padding: 20px;
-  border: 1px solid var(--line);
-  background: var(--surface);
+  padding: 22px 0 0;
+  margin-top: 22px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
 }
 
 .what-grid li:last-child {
-  grid-column: 1 / -1;
+  grid-column: span 5;
 }
 
 .what-grid .num {
@@ -697,15 +703,14 @@ del {
 .modes-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  gap: 28px;
 }
 
 .mode {
-  padding: 22px;
-  border: 1px solid var(--line);
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0) 18%),
-    var(--surface);
+  padding: 22px 0 0;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
 }
 
 .mode header,
@@ -774,7 +779,7 @@ del {
 .det-stage {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: 16px;
+  gap: 24px;
   align-items: start;
 }
 
@@ -793,8 +798,8 @@ del {
 
 .det-input-col,
 .det-output-col {
-  padding: 22px;
-  background: var(--surface);
+  padding: 0;
+  background: transparent;
 }
 
 .det-label {
@@ -809,12 +814,12 @@ del {
 }
 
 .det-input-box {
-  min-height: 320px;
+  min-height: 360px;
 }
 
 .det-input-box textarea {
   width: 100%;
-  min-height: 320px;
+  min-height: 360px;
   padding: 18px;
   border: 0;
   resize: vertical;
@@ -852,7 +857,7 @@ del {
 }
 
 .det-output {
-  min-height: 320px;
+  min-height: 360px;
   padding: 18px;
   color: var(--body);
   line-height: 1.75;
@@ -958,28 +963,38 @@ del {
 
 .ex-list {
   display: grid;
-  gap: 16px;
+  gap: 0;
 }
 
 .ex {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(220px, 0.62fr);
-  gap: 16px;
-  padding: 22px;
-  border: 1px solid var(--line);
-  background: var(--surface);
+  gap: 22px;
+  padding: 26px 0 0;
+  margin-top: 26px;
+  border: 0;
+  border-top: 1px solid var(--line);
+  background: transparent;
+}
+
+.ex:first-child {
+  padding-top: 0;
+  margin-top: 0;
+  border-top: 0;
 }
 
 .ex-before,
 .ex-after {
-  padding: 16px;
-  border: 1px solid var(--line);
-  background: var(--bg);
+  padding: 0;
+  border: 0;
+  background: transparent;
   line-height: 1.7;
 }
 
 .ex-after {
   color: var(--text);
+  padding-left: 18px;
+  border-left: 1px solid var(--line);
 }
 
 .ex-side-label {
@@ -994,6 +1009,8 @@ del {
   display: grid;
   gap: 10px;
   align-content: start;
+  padding-left: 18px;
+  border-left: 1px solid var(--line);
 }
 
 .ex-changes li {
@@ -1008,13 +1025,17 @@ del {
 
 .tiers {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 0 28px;
 }
 
 .tier {
-  padding: 22px;
-  background: var(--surface);
+  grid-column: span 4;
+  padding: 22px 0 0;
+  margin-top: 22px;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
 }
 
 .tier header,
@@ -1064,14 +1085,16 @@ del {
 .calib {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
-  margin-top: 16px;
+  gap: 28px;
+  margin-top: 28px;
 }
 
 .of-col,
 .calib-col {
-  padding: 22px;
-  background: var(--surface);
+  padding: 22px 0 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
 }
 
 .of-col h4,
@@ -1085,13 +1108,16 @@ del {
 .pat-grid,
 .cred-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 28px;
 }
 
 .pat {
-  padding: 20px;
-  background: var(--surface);
+  padding: 20px 0 0;
+  margin-top: 20px;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
 }
 
 .pat header {
@@ -1133,12 +1159,14 @@ del {
 .sev-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 16px;
+  gap: 28px;
 }
 
 .sev {
-  padding: 22px;
-  background: var(--surface);
+  padding: 18px 0 0;
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
 }
 
 .sev-label {
@@ -1149,6 +1177,10 @@ del {
   color: var(--accent);
 }
 
+.sev-p0 {
+  border-top-color: rgba(232, 106, 45, 0.5);
+}
+
 .sev-p1 .sev-label,
 .sev-p2 .sev-label {
   color: var(--body);
@@ -1157,7 +1189,7 @@ del {
 .install .wrap {
   display: grid;
   grid-template-columns: minmax(0, 1.08fr) minmax(320px, 0.92fr);
-  gap: 16px;
+  gap: 28px;
   align-items: start;
 }
 
@@ -1251,7 +1283,7 @@ del {
 
 .repo-tree {
   padding: 22px;
-  background: var(--surface);
+  background: transparent;
 }
 
 .repo-tree header {
@@ -1265,11 +1297,14 @@ del {
 }
 
 .cred {
-  padding: 22px;
+  padding: 22px 0 0;
+  margin-top: 22px;
   display: grid;
   align-content: start;
   gap: 12px;
-  background: var(--surface);
+  background: transparent;
+  border: 0;
+  border-top: 1px solid var(--line);
 }
 
 .cred-kind {
@@ -1302,7 +1337,7 @@ del {
 }
 
 .cred-foot {
-  margin: 18px 0 0;
+  margin: 28px 0 0;
   max-width: 58ch;
 }
 
@@ -1376,6 +1411,17 @@ del {
   .calib {
     grid-template-columns: 1fr 1fr;
   }
+
+  .sec-head {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .sec-title,
+  .sec-kicker {
+    grid-column: auto;
+    max-width: none;
+  }
 }
 
 @media (max-width: 860px) {
@@ -1416,6 +1462,12 @@ del {
   .openers-fillers,
   .calib {
     grid-template-columns: 1fr;
+  }
+
+  .ex-after,
+  .ex-changes {
+    padding-left: 0;
+    border-left: 0;
   }
 
   .demo-divider {
@@ -1472,6 +1524,17 @@ del {
 
   .what-grid li {
     grid-template-columns: 1fr;
+  }
+
+  .mode,
+  .tier,
+  .of-col,
+  .calib-col,
+  .pat,
+  .sev,
+  .cred {
+    padding-top: 18px;
+    margin-top: 18px;
   }
 
   .demo-foot,
