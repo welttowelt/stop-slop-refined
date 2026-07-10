@@ -39,17 +39,13 @@
       <div class="shell hero-grid">
         <div class="hero-copy reveal">
           <div class="eyebrow"><span class="status-dot"></span> Public writing skill / MIT licensed</div>
-          <h1 id="hero-title">Turn AI drafts into<br><span class="red-pencil"><em>clear writing.</em></span></h1>
+          <h1 id="hero-title">Turn AI drafts into <em>clear writing.</em></h1>
           <p class="hero-lede">Stop Slop is a free editing skill for Claude, ChatGPT, and Codex. It removes generic wording and repeated sentence patterns while preserving your facts and voice.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#workbench">Try it on a draft <span aria-hidden="true">↓</span></a>
             <a class="text-link" href="#install">Install the skill <span aria-hidden="true">→</span></a>
           </div>
-          <dl class="hero-notes" aria-label="Where Stop Slop helps">
-            <div><dt>Work</dt><dd>Emails and memos</dd></div>
-            <div><dt>Public</dt><dd>Posts and website copy</dd></div>
-            <div><dt>Technical</dt><dd>Docs and reports</dd></div>
-          </dl>
+          <p class="hero-uses"><span>Use it for</span> emails, memos, posts, website copy, docs, and reports.</p>
         </div>
 
         <figure class="proof-sheet reveal" aria-label="Before and after editing example">
@@ -219,42 +215,54 @@
         </header>
 
         <div class="library-grid reveal">
-          <details open>
-            <summary><span>Tier 1</span><small>replace by default</small></summary>
+          <article class="library-entry">
+            <header class="library-entry-head"><h3>Tier 1</h3><small>replace by default</small></header>
             <div class="library-example">
               <span class="library-example-label">Example</span>
               <div><small>Before</small><p>The team utilized a comprehensive checklist in order to review every release.</p></div>
               <div><small>After</small><p>The team used one checklist to review every release.</p></div>
             </div>
-            <div class="word-cloud" data-tier="1"></div>
-          </details>
-          <details>
-            <summary><span>Tier 2</span><small>check in clusters</small></summary>
+            <details class="library-list">
+              <summary>View the Tier 1 reference</summary>
+              <div class="word-cloud" data-tier="1"></div>
+            </details>
+          </article>
+          <article class="library-entry">
+            <header class="library-entry-head"><h3>Tier 2</h3><small>check in clusters</small></header>
             <div class="library-example">
               <span class="library-example-label">Example</span>
               <div><small>Before</small><p>The program empowers local teams to navigate applications across three regional funds.</p></div>
               <div><small>After</small><p>The program helps local teams apply to three regional funds.</p></div>
             </div>
-            <div class="word-cloud" data-tier="2"></div>
-          </details>
-          <details>
-            <summary><span>Tier 3</span><small>check at density</small></summary>
+            <details class="library-list">
+              <summary>View the Tier 2 reference</summary>
+              <div class="word-cloud" data-tier="2"></div>
+            </details>
+          </article>
+          <article class="library-entry">
+            <header class="library-entry-head"><h3>Tier 3</h3><small>check at density</small></header>
             <div class="library-example">
               <span class="library-example-label">Example</span>
               <div><small>Before</small><p>The workflow is a significant and effective improvement. It cut review time from two days to four hours.</p></div>
               <div><small>After</small><p>The workflow cut review time from two days to four hours.</p></div>
             </div>
-            <div class="word-cloud" data-tier="3"></div>
-          </details>
-          <details>
-            <summary><span>Patterns</span><small>structure and stance</small></summary>
+            <details class="library-list">
+              <summary>View the Tier 3 reference</summary>
+              <div class="word-cloud" data-tier="3"></div>
+            </details>
+          </article>
+          <article class="library-entry">
+            <header class="library-entry-head"><h3>Patterns</h3><small>structure and stance</small></header>
             <div class="library-example">
               <span class="library-example-label">Example</span>
               <div><small>Before</small><p>Stop Slop is not just a writing skill. It is a complete shift in how teams communicate. So what does this mean? The future is already here.</p></div>
               <div><small>After</small><p>Stop Slop finds generic wording and repeated patterns in AI-assisted drafts.</p></div>
             </div>
-            <div class="pattern-index" data-patterns></div>
-          </details>
+            <details class="library-list">
+              <summary>View the pattern reference</summary>
+              <div class="pattern-index" data-patterns></div>
+            </details>
+          </article>
         </div>
       </div>
     </section>
