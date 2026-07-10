@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stop Slop revision</title>
+<style>
+:root{color-scheme:light;--paper:#f4efe3;--ink:#171713;--muted:#6b685f;--line:#cbc3b2;--red:#d83b25;--green:#1b6b4a;--white:#fffdf8}*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:18px/1.65 Georgia,serif}.shell{width:min(880px,calc(100% - 32px));margin:48px auto}.top{display:flex;align-items:end;justify-content:space-between;border-bottom:2px solid var(--ink);padding-bottom:16px}.kicker{font:700 12px/1.2 ui-monospace,monospace;letter-spacing:.16em;text-transform:uppercase;color:var(--red)}h1{font-size:clamp(36px,7vw,72px);line-height:.92;margin:8px 0 0}.tabs{display:flex;gap:8px;margin:24px 0}.tabs button{border:1px solid var(--ink);background:transparent;padding:10px 14px;font:700 12px/1 ui-monospace,monospace;text-transform:uppercase;cursor:pointer}.tabs button[aria-selected="true"]{background:var(--ink);color:var(--white)}.panel{display:none;background:var(--white);border:1px solid var(--line);padding:clamp(20px,5vw,48px);box-shadow:8px 8px 0 var(--line)}.panel.active{display:block}.para{margin:0 0 1.25em}.para:last-child{margin-bottom:0}.edit-old,.deleted{color:#8b3024;text-decoration:line-through;text-decoration-color:var(--red);text-decoration-thickness:2px}.edit-new{color:var(--green);background:#dfecdf}.change{position:relative;cursor:help}.change:hover::after,.change:focus::after{content:attr(data-why);position:absolute;left:0;bottom:calc(100% + 8px);z-index:2;width:max-content;max-width:260px;background:var(--ink);color:var(--white);padding:7px 9px;font:12px/1.4 ui-monospace,monospace}.arrow{color:var(--muted);padding:0 .3em}@media(max-width:600px){.top{align-items:start;flex-direction:column;gap:12px}.tabs{overflow:auto}.panel{box-shadow:4px 4px 0 var(--line)}}
+</style>
+</head>
+<body>
+<main class="shell">
+  <header class="top">
+    <div><div class="kicker">Stop Slop revision</div><h1>Read the edit.</h1></div>
+    <div class="kicker" id="summary"></div>
+  </header>
+  <div class="tabs" role="tablist" aria-label="Revision views">
+    <button role="tab" aria-selected="true" data-tab="first">First draft</button>
+    <button role="tab" aria-selected="false" data-tab="final">Final draft</button>
+    <button role="tab" aria-selected="false" data-tab="diff">Diff</button>
+  </div>
+  <section class="panel active" data-panel="first"></section>
+  <section class="panel" data-panel="final"></section>
+  <section class="panel" data-panel="diff"></section>
+</main>
+<script>
+const DATA = __DATA__;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const paragraphs=(view)=>DATA.map(p=>`<p class="para">${p.items.map(item=>{
+  if(view==='first') return item.type==='keep'?esc(item.text):esc(item.old);
+  if(view==='final') return item.type==='del'?'':esc(item.type==='keep'?item.text:item.new);
+  if(item.type==='keep') return esc(item.text);
+  if(item.type==='del') return `<span class="deleted change" tabindex="0" data-why="${esc(item.why)}">${esc(item.old)}</span>`;
+  return `<span class="edit-old change" tabindex="0" data-why="${esc(item.why)}">${esc(item.old)}</span><span class="arrow">→</span><span class="edit-new change" tabindex="0" data-why="${esc(item.why)}">${esc(item.new)}</span>`;
+}).join(' ')}</p>`).join('');
+document.querySelectorAll('[data-panel]').forEach(panel=>{panel.innerHTML=paragraphs(panel.dataset.panel)});
+const changed=DATA.flatMap(p=>p.items).filter(i=>i.type!=='keep').length;
+document.getElementById('summary').textContent=`${changed} change${changed===1?'':'s'}`;
+document.querySelectorAll('[data-tab]').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('[data-tab]').forEach(b=>b.setAttribute('aria-selected',String(b===button)));
+  document.querySelectorAll('[data-panel]').forEach(p=>p.classList.toggle('active',p.dataset.panel===button.dataset.tab));
+}));
+</script>
+</body>
+</html>

@@ -1,530 +1,312 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-<meta name="color-scheme" content="dark" />
-<title>stop slop — a public writing skill</title>
-<meta name="description" content="A public writing skill for removing common AI patterns from prose. Audit drafts, rewrite content, pressure-test writing." />
-<meta property="og:title" content="stop slop" />
-<meta property="og:description" content="A public writing skill for removing common AI patterns from prose." />
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="styles.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext x='8' y='78' font-family='Georgia,serif' font-size='96' font-style='italic' font-weight='900' fill='%23141211'%3Es%3C/text%3E%3Cpath d='M6 58 L64 58' stroke='%23c83a26' stroke-width='10' stroke-linecap='round' transform='rotate(-6 35 58)'/%3E%3C/svg%3E">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <title>Stop Slop v3 | Plain, source-safe writing</title>
+  <meta name="description" content="A public writing skill that removes formulaic AI prose while preserving facts, uncertainty, clarity, and useful voice.">
+  <meta property="og:title" content="Stop Slop v3">
+  <meta property="og:description" content="Keep the point. Cut the slop.">
+  <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%230c0a18'/%3E%3Cpath d='M15 59 L84 50' fill='none' stroke='%23e86a2d' stroke-width='10'/%3E%3Ctext x='18' y='71' font-family='Arial,sans-serif' font-size='70' font-weight='700' fill='white'%3ES%3C/text%3E%3C/svg%3E">
 </head>
 <body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <div class="reading-progress" aria-hidden="true"><span data-progress></span></div>
 
-<!-- MASTHEAD -->
-<header class="masthead">
-  <div class="wrap">
-    <a class="wordmark" href="#top" aria-label="stop slop">
-      <span class="wm-stop">stop</span><span class="wm-sep">/</span><span class="wm-slop">slop</span><span class="wm-dot">.</span>
-    </a>
-    <nav class="nav" aria-label="sections">
-      <a href="#what">what</a>
-      <a href="#demo">demo</a>
-      <a href="#examples">examples</a>
-      <a href="#words">words</a>
-      <a href="#patterns">patterns</a>
-      <a href="#install">install</a>
-    </nav>
-    <div class="mast-right">
-      <a class="gh" href="https://github.com/welttowelt/stop-slop-refined" target="_blank" rel="noopener">
-        github <span aria-hidden="true">→</span>
+  <header class="masthead">
+    <div class="shell masthead-inner">
+      <a class="wordmark" href="#top" aria-label="Stop Slop home">
+        <span>stop</span><span class="wordmark-slop">slop</span><sup>3</sup>
       </a>
+      <nav class="nav" aria-label="Primary navigation">
+        <a href="#method">Method</a>
+        <a href="#workbench">Workbench</a>
+        <a href="#rules">Rules</a>
+        <a href="#install">Install</a>
+      </nav>
+      <a class="repo-link" href="https://github.com/welttowelt/stop-slop-refined" target="_blank" rel="noopener">GitHub <span aria-hidden="true">↗</span></a>
     </div>
-  </div>
-</header>
+  </header>
 
-<main id="top">
+  <main id="content">
+    <section class="hero" id="top" aria-labelledby="hero-title">
+      <div class="shell hero-grid">
+        <div class="hero-copy reveal">
+          <div class="eyebrow"><span class="status-dot"></span> Public skill, version 3.0</div>
+          <h1 id="hero-title">Keep the point.<br><span class="red-pencil">Cut the <em>slop.</em></span></h1>
+          <p class="hero-lede">Stop Slop edits formulaic AI prose without flattening meaning, inventing evidence, or hiding the writer behind a template.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#workbench">Try the workbench <span aria-hidden="true">↓</span></a>
+            <a class="text-link" href="#install">Install v3 <span aria-hidden="true">→</span></a>
+          </div>
+          <dl class="hero-notes" aria-label="Version 3 principles">
+            <div><dt>Baseline</dt><dd>Plain writing</dd></div>
+            <div><dt>Default</dt><dd>Clean prose first</dd></div>
+            <div><dt>Boundary</dt><dd>No invented facts</dd></div>
+          </dl>
+        </div>
 
-<!-- HERO -->
-<section class="hero" aria-labelledby="hero-title">
-  <div class="wrap hero-wrap">
-
-    <aside class="hero-meta">
-      <span class="tag tag-live"><span class="dot"></span> public release</span>
-      <span class="tag">mit license</span>
-      <span class="tag">claude · codex · chatgpt</span>
-    </aside>
-
-    <h1 id="hero-title" class="display">
-      <span class="d-line">stop</span>
-      <span class="d-line slant"><em>slop</em><span class="mark"></span></span>
-      <span class="d-line small">a writing skill.</span>
-    </h1>
-
-    <div class="hero-body">
-      <p class="lede">
-        a public writing skill for removing common ai patterns from prose.
-      </p>
-      <p class="deck">
-        use it to audit drafts, rewrite content, or pressure-test writing that feels too polished,
-        too generic, or too obviously machine-generated.
-      </p>
-      <div class="cta-row">
-        <a class="btn btn-primary" href="#install">install <span aria-hidden="true">↓</span></a>
-        <a class="btn btn-ghost" href="#demo">try the detector <span aria-hidden="true">→</span></a>
+        <figure class="proof-sheet reveal" aria-label="Before and after editing example">
+          <div class="proof-holes" aria-hidden="true"><i></i><i></i><i></i></div>
+          <figcaption class="proof-head">
+            <span>Editor proof</span>
+            <span><b data-proof-index>01</b> / <span data-proof-total>03</span></span>
+          </figcaption>
+          <div class="proof-block proof-before">
+            <span class="proof-label">First draft</span>
+            <blockquote data-proof-before></blockquote>
+          </div>
+          <div class="proof-arrow" aria-hidden="true">↓</div>
+          <div class="proof-block proof-after">
+            <span class="proof-label">Final draft</span>
+            <blockquote data-proof-after></blockquote>
+          </div>
+          <div class="proof-foot">
+            <ul data-proof-notes></ul>
+            <button type="button" data-proof-next>Next proof <span aria-hidden="true">↻</span></button>
+          </div>
+          <span class="margin-note" aria-hidden="true">keep the claim</span>
+        </figure>
       </div>
-    </div>
+      <div class="hero-rule" aria-hidden="true"><span>plain</span><span>specific</span><span>source-safe</span></div>
+    </section>
 
-    <!-- hero demo: before/after reveal -->
-    <figure class="hero-demo" aria-label="live before-after demonstration">
-      <header class="demo-head">
-        <span class="d-title">before / after</span>
-        <span class="d-counter"><span data-demo-index>1</span>&nbsp;/&nbsp;<span data-demo-total>6</span></span>
-      </header>
-      <div class="demo-stage">
-        <div class="demo-side demo-before">
-          <span class="side-label">before</span>
-          <blockquote data-demo-before></blockquote>
-        </div>
-        <div class="demo-divider" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </div>
-        <div class="demo-side demo-after">
-          <span class="side-label">after</span>
-          <blockquote data-demo-after></blockquote>
-        </div>
-      </div>
-      <footer class="demo-foot">
-        <ul class="demo-changes" data-demo-changes></ul>
-        <button class="demo-next" type="button" data-demo-next>next <span aria-hidden="true">↻</span></button>
-      </footer>
-    </figure>
-
-  </div>
-
-  <!-- subtle ruled baseline -->
-  <div class="rules" aria-hidden="true"></div>
-</section>
-
-<!-- WHAT IT DOES -->
-<section id="what" class="section what" aria-labelledby="what-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 01</span>
-      <h2 id="what-title" class="sec-title">what it does.</h2>
-      <p class="sec-kicker">a short, opinionated editing pass. not a voice layer.</p>
-    </div>
-
-    <ol class="what-grid">
-      <li>
-        <span class="num">01</span>
-        <h3>flags common ai writing patterns</h3>
-        <p>word-level hits, structural tells, and voice-level stance problems, all flagged separately.</p>
-      </li>
-      <li>
-        <span class="num">02</span>
-        <h3>supports two modes</h3>
-        <p><span class="pill pill-ink">rewrite</span> <span class="pill pill-out">detect</span> — default is a rewrite with a second pass; detect is flag-only.</p>
-      </li>
-      <li>
-        <span class="num">03</span>
-        <h3>splits word-level from structural</h3>
-        <p>vocabulary tiers, pattern tells, and formatting artifacts live in three separate references.</p>
-      </li>
-      <li>
-        <span class="num">04</span>
-        <h3>encourages a second pass</h3>
-        <p>one clean-up rarely fixes rhythm. the skill rewrites, then pressure-tests its own rewrite.</p>
-      </li>
-      <li>
-        <span class="num">05</span>
-        <h3>works as a local skill or a prompt pack</h3>
-        <p>drop it into claude code or codex. paste it into a chatgpt project. use it in one-off threads.</p>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- MODES -->
-<section id="modes" class="section modes" aria-labelledby="modes-title">
-  <div class="wrap modes-wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 02</span>
-      <h2 id="modes-title" class="sec-title">two modes.</h2>
-      <p class="sec-kicker">default is rewrite. switch to detect when you want flags without prose.</p>
-    </div>
-
-    <div class="modes-grid">
-      <article class="mode mode-rewrite">
-        <header>
-          <span class="mode-label">default</span>
-          <h3>rewrite</h3>
+    <section class="section method" id="method" aria-labelledby="method-title">
+      <div class="shell">
+        <header class="section-head reveal">
+          <span class="section-number">01 / Method</span>
+          <h2 id="method-title">Plain first.<br>Source-safe throughout.</h2>
+          <p>Version 3 changes the editing order. The skill now protects the claim before it touches style, and it treats clarity as more than brevity.</p>
         </header>
-        <ul>
-          <li><span>flag the main issues</span></li>
-          <li><span>rewrite the text</span></li>
-          <li><span>run a second pass on the rewrite</span></li>
-        </ul>
-        <footer>
-          <span class="mode-out">output</span>
-          <code>issues · rewrite · what changed · second pass</code>
-        </footer>
-      </article>
 
-      <article class="mode mode-detect">
-        <header>
-          <span class="mode-label">on request</span>
-          <h3>detect</h3>
-        </header>
-        <ul>
-          <li><span>flag only</span></li>
-          <li><span>show what reads as ai</span></li>
-          <li><span>separate clear problems from judgment calls</span></li>
-        </ul>
-        <footer>
-          <span class="mode-out">output</span>
-          <code>issues · assessment · fix direction</code>
-        </footer>
-      </article>
-    </div>
-
-    <p class="modes-note">
-      trigger detect with <span class="kbd">detect</span>, <span class="kbd">flag only</span>, <span class="kbd">audit only</span>, or <span class="kbd">scan</span>.
-    </p>
-  </div>
-</section>
-
-<!-- INTERACTIVE DETECTOR -->
-<section id="demo" class="section detector" aria-labelledby="det-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 03</span>
-      <h2 id="det-title" class="sec-title">quick detector.</h2>
-      <p class="sec-kicker">paste prose on the left. flags appear on the right.</p>
-    </div>
-
-    <div class="det-stage">
-      <div class="det-input-col">
-        <label class="det-label" for="det-input">your draft</label>
-        <div class="det-input-box">
-          <textarea id="det-input" spellcheck="false" autocapitalize="off" autocomplete="off">In today's fast-moving landscape, teams need to leverage robust workflows in order to navigate complexity. Let's dive in. Here's the thing: it's not just a tool. It's a paradigm.
-
-Great question! This platform serves as a comprehensive hub for modern collaboration. Industry observers note that adoption has accelerated, showcasing the transformative potential of the product.
-
-In conclusion, the future looks bright as we move forward.</textarea>
+        <div class="change-ledger reveal" aria-label="Version 3 changes">
+          <div class="ledger-row ledger-head"><span>Old habit</span><span>Version 3</span></div>
+          <div class="ledger-row"><span><s>Mechanical word blacklist</s></span><span>Judgment by context</span></div>
+          <div class="ledger-row"><span><s>Shorter at any cost</s></span><span>Clear enough for a first-time reader</span></div>
+          <div class="ledger-row"><span><s>Specificity by invention</s></span><span>Facts and uncertainty stay inside the source</span></div>
+          <div class="ledger-row"><span><s>Diagnostics before prose</s></span><span>The clean rewrite comes first</span></div>
         </div>
-        <div class="det-toolbar">
-          <button type="button" class="btn btn-ghost btn-sm" data-det-reset>reset draft</button>
-          <button type="button" class="btn btn-ghost btn-sm" data-det-clear>clear</button>
-          <span class="det-counts">
-            <span class="c-count"><b data-det-words>0</b> words</span>
-            <span class="c-count"><b data-det-flags>0</b> flags</span>
-          </span>
+
+        <div class="route reveal" aria-labelledby="route-title">
+          <div class="route-intro">
+            <span class="micro-label">The editing route</span>
+            <h3 id="route-title">The order is part of the method.</h3>
+          </div>
+          <ol class="route-list">
+            <li><span>01</span><b>Protect facts</b><small>Claim, evidence, uncertainty</small></li>
+            <li><span>02</span><b>Check AI's role</b><small>Who chose the first shape?</small></li>
+            <li><span>03</span><b>Fix structure</b><small>Argument before polish</small></li>
+            <li><span>04</span><b>Write plainly</b><small>Common words, full logic</small></li>
+            <li><span>05</span><b>Cut residue</b><small>Words, patterns, formatting</small></li>
+            <li><span>06</span><b>Read again</b><small>As a new reader</small></li>
+          </ol>
         </div>
       </div>
+    </section>
 
-      <div class="det-output-col">
-        <label class="det-label">flagged reading</label>
-        <div class="det-output" data-det-output aria-live="polite"></div>
-        <ul class="det-legend">
-          <li><span class="sw sw-t1"></span> tier 1 word</li>
-          <li><span class="sw sw-t2"></span> tier 2 word</li>
-          <li><span class="sw sw-t3"></span> tier 3 word</li>
-          <li><span class="sw sw-pat"></span> pattern</li>
-          <li><span class="sw sw-open"></span> bad opener</li>
-        </ul>
-        <div class="det-score" data-det-score></div>
-        <p class="modes-note">this demo loads the canonical word lists and pattern cards from the repo. structural detection is still limited to browser-detectable heuristics.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- EXAMPLES -->
-<section id="examples" class="section examples" aria-labelledby="ex-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 04</span>
-      <h2 id="ex-title" class="sec-title">before &amp; after.</h2>
-      <p class="sec-kicker">six drafts, plainly edited. each card shows the cut, the replacement, and the reason.</p>
-    </div>
-
-    <ol class="ex-list" data-examples-list></ol>
-  </div>
-</section>
-
-<!-- WORDS / TIERS -->
-<section id="words" class="section words" aria-labelledby="words-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 05</span>
-      <h2 id="words-title" class="sec-title">word flags, by tier.</h2>
-      <p class="sec-kicker">editing pressure points, not absolute bans. context still decides.</p>
-    </div>
-
-    <div class="tiers">
-      <article class="tier tier-1">
-        <header>
-          <span class="tier-tag">tier 1</span>
-          <h3>replace on sight</h3>
-          <p>unless there is a clear reason not to.</p>
-        </header>
-        <div class="tier-pills" data-tier="1"></div>
-      </article>
-      <article class="tier tier-2">
-        <header>
-          <span class="tier-tag">tier 2</span>
-          <h3>flag in clusters</h3>
-          <p>two or more in one paragraph is usually a bad sign.</p>
-        </header>
-        <div class="tier-pills" data-tier="2"></div>
-      </article>
-      <article class="tier tier-3">
-        <header>
-          <span class="tier-tag">tier 3</span>
-          <h3>flag at density</h3>
-          <p>normal words. only a problem when the draft leans on them too often.</p>
-        </header>
-        <div class="tier-pills" data-tier="3"></div>
-      </article>
-    </div>
-
-    <div class="openers-fillers">
-      <div class="of-col">
-        <h4>common bad openers</h4>
-        <div class="of-pills" data-openers></div>
-      </div>
-      <div class="of-col">
-        <h4>common filler phrases</h4>
-        <div class="of-pills" data-fillers></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PATTERNS -->
-<section id="patterns" class="section patterns" aria-labelledby="pat-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 06</span>
-      <h2 id="pat-title" class="sec-title">pattern flags.</h2>
-      <p class="sec-kicker">structure and stance tells that survive clean vocabulary.</p>
-    </div>
-
-    <div class="pat-grid" data-patterns></div>
-  </div>
-</section>
-
-<!-- SEVERITY -->
-<section id="severity" class="section severity" aria-labelledby="sev-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 07</span>
-      <h2 id="sev-title" class="sec-title">severity.</h2>
-      <p class="sec-kicker">three bands. credibility first, then smell, then polish.</p>
-    </div>
-
-    <ol class="sev-grid">
-      <li class="sev sev-p0">
-        <header>
-          <span class="sev-label">p0</span>
-          <h3>credibility</h3>
-        </header>
-        <ul>
-          <li>fake sourcing</li>
-          <li>chatbot artifacts</li>
-          <li>cutoff disclaimers</li>
-          <li>markdown in plain-text contexts</li>
-          <li>obvious significance inflation</li>
-        </ul>
-      </li>
-      <li class="sev sev-p1">
-        <header>
-          <span class="sev-label">p1</span>
-          <h3>clear ai smell</h3>
-        </header>
-        <ul>
-          <li>tier-1 word hits</li>
-          <li>repeated templates</li>
-          <li>formulaic openings</li>
-          <li>repeated contrasts</li>
-          <li>rhythm that feels machine-even</li>
-        </ul>
-      </li>
-      <li class="sev sev-p2">
-        <header>
-          <span class="sev-label">p2</span>
-          <h3>polish</h3>
-        </header>
-        <ul>
-          <li>too many triads</li>
-          <li>too many bullets</li>
-          <li>repetitive paragraph shapes</li>
-          <li>conclusion that says nothing</li>
-        </ul>
-      </li>
-    </ol>
-
-    <div class="calib">
-      <div class="calib-col calib-strict">
-        <h4>be stricter in</h4>
-        <ul>
-          <li>essays</li>
-          <li>investor emails</li>
-          <li>public posts</li>
-          <li>website copy</li>
-        </ul>
-      </div>
-      <div class="calib-col calib-loose">
-        <h4>be looser in</h4>
-        <ul>
-          <li>docs</li>
-          <li>technical notes</li>
-          <li>fast internal chat</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- INSTALL -->
-<section id="install" class="section install" aria-labelledby="inst-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 08</span>
-      <h2 id="inst-title" class="sec-title">install.</h2>
-      <p class="sec-kicker">local skill, prompt pack, or paste-in. pick the one that matches where you write.</p>
-    </div>
-
-    <div class="inst-panel">
-      <div class="inst-tabs" role="tablist" aria-label="install targets">
-        <button role="tab" class="inst-tab active" data-inst-tab="claude">claude code</button>
-        <button role="tab" class="inst-tab" data-inst-tab="codex">codex</button>
-        <button role="tab" class="inst-tab" data-inst-tab="projects">chatgpt · claude projects</button>
-        <button role="tab" class="inst-tab" data-inst-tab="chat">plain chat</button>
-      </div>
-
-      <div class="inst-panes">
-        <div class="inst-pane active" data-inst-pane="claude">
-          <pre><code><span class="c-comment"># ~/.claude/skills/stop-slop</span>
-mkdir -p ~/.claude/skills
-git clone https://github.com/welttowelt/stop-slop-refined.git ~/.claude/skills/stop-slop</code></pre>
-          <button class="copy" type="button" data-copy>copy</button>
+    <section class="ai-role" aria-labelledby="ai-role-title">
+      <div class="shell ai-role-grid">
+        <div class="ai-role-copy reveal">
+          <span class="section-number section-number-light">02 / Before line edits</span>
+          <h2 id="ai-role-title">Who chose the first shape?</h2>
+          <p>If AI chose the claim, outline, and first example, word cleanup will preserve the model's center. Put the draft aside, recover the human point, then rebuild.</p>
+          <a href="https://github.com/welttowelt/stop-slop-refined/blob/main/references/ai-role-and-reader-fit.md" target="_blank" rel="noopener">Read the AI-role check <span aria-hidden="true">↗</span></a>
         </div>
-        <div class="inst-pane" data-inst-pane="codex">
-          <pre><code><span class="c-comment"># ~/.codex/skills/stop-slop</span>
-mkdir -p ~/.codex/skills
+        <div class="anchor-test reveal" aria-label="Anti-anchoring checklist">
+          <div class="anchor-title"><span>Anti-anchoring pass</span><span class="stamp">v3</span></div>
+          <ol>
+            <li><span>Put the current draft aside.</span></li>
+            <li><span>Write the point without borrowing its nouns or order.</span></li>
+            <li><span>List the evidence and uncertainty that must survive.</span></li>
+            <li><span>Rebuild around the reader's needed action or understanding.</span></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section workbench" id="workbench" aria-labelledby="workbench-title">
+      <div class="shell">
+        <header class="section-head section-head-row reveal">
+          <div>
+            <span class="section-number">03 / Workbench</span>
+            <h2 id="workbench-title">Review the residue.</h2>
+          </div>
+          <p>This browser pass finds phrases and detectable patterns. It gives editing prompts. It does not identify authorship.</p>
+        </header>
+
+        <div class="workbench-frame reveal">
+          <div class="draft-pane">
+            <div class="pane-head">
+              <label for="det-input">Draft</label>
+              <span><b data-det-words>0</b> words</span>
+            </div>
+            <textarea id="det-input" spellcheck="true">In today's fast-moving landscape, our comprehensive platform empowers teams to leverage robust workflows in order to navigate complexity. Industry observers note that adoption has accelerated, showcasing the transformative potential of the product. In conclusion, the future looks bright as we move forward.</textarea>
+            <div class="pane-actions">
+              <button type="button" data-det-reset>Load sample</button>
+              <button type="button" data-det-clear>Clear</button>
+            </div>
+          </div>
+          <div class="review-pane">
+            <div class="pane-head">
+              <span>Review</span>
+              <span><b data-det-flags>0</b> <span data-det-unit>prompts</span></span>
+            </div>
+            <div class="annotated-copy" data-det-output aria-live="polite"></div>
+            <div class="review-footer">
+              <p data-det-summary></p>
+              <ul class="review-hits" data-det-hits aria-label="Detected review prompts"></ul>
+            </div>
+          </div>
+        </div>
+        <div class="legend" aria-label="Detector legend">
+          <span><i class="swatch swatch-red"></i>replace by default</span>
+          <span><i class="swatch swatch-amber"></i>check in context</span>
+          <span><i class="swatch swatch-blue"></i>pattern or opener</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section rules" id="rules" aria-labelledby="rules-title">
+      <div class="shell">
+        <header class="section-head section-head-row reveal">
+          <div>
+            <span class="section-number">04 / Core rules</span>
+            <h2 id="rules-title">Eleven checks.<br>One readable draft.</h2>
+          </div>
+          <p>The rules are ordered by reader consequence. They protect substance before they polish the sentence.</p>
+        </header>
+
+        <ol class="rule-list reveal">
+          <li><span>01</span><div><h3>Cut filler</h3><p>Remove throat-clearing, empty emphasis, decorative jargon, and hedges that do no useful work.</p></div></li>
+          <li><span>02</span><div><h3>Break formulas</h3><p>Rewrite binary contrasts, negative listings, rhetorical setups, and other repeated templates.</p></div></li>
+          <li><span>03</span><div><h3>Name responsibility</h3><p>Name the actor for judgment or choice. Keep ordinary literal subjects when they are clearer.</p></div></li>
+          <li><span>04</span><div><h3>Be specific</h3><p>Replace vague importance with the action, limit, reason, evidence, or consequence.</p></div></li>
+          <li><span>05</span><div><h3>Keep the reader close</h3><p>Use the actor, object, and situation instead of distant abstractions.</p></div></li>
+          <li><span>06</span><div><h3>Vary rhythm</h3><p>Mix sentence and paragraph shapes. Do not pad a list to three for cadence.</p></div></li>
+          <li><span>07</span><div><h3>Trust the reader</h3><p>State the point without reassurance or repeated justification.</p></div></li>
+          <li><span>08</span><div><h3>Cut manufactured quotables</h3><p>Rewrite lines built to sound profound instead of useful.</p></div></li>
+          <li><span>09</span><div><h3>Earn emphasis</h3><p>Show the change or tension instead of announcing it.</p></div></li>
+          <li><span>10</span><div><h3>Check the AI role</h3><p>Recover the human center before line editing an AI-first draft.</p></div></li>
+          <li><span>11</span><div><h3>Protect clarity</h3><p>Keep the logic, definition, or bridge that a first-time reader needs.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section library" id="library" aria-labelledby="library-title">
+      <div class="shell">
+        <header class="section-head reveal">
+          <span class="section-number">05 / Reference library</span>
+          <h2 id="library-title">Pressure points,<br>not proof.</h2>
+          <p>A flagged word can be correct. A clean word list can still hide a templated argument. Use the library to review, then decide.</p>
+        </header>
+
+        <div class="library-grid reveal">
+          <details open>
+            <summary><span>Tier 1</span><small>replace by default</small></summary>
+            <div class="word-cloud" data-tier="1"></div>
+          </details>
+          <details>
+            <summary><span>Tier 2</span><small>check in clusters</small></summary>
+            <div class="word-cloud" data-tier="2"></div>
+          </details>
+          <details>
+            <summary><span>Tier 3</span><small>check at density</small></summary>
+            <div class="word-cloud" data-tier="3"></div>
+          </details>
+          <details>
+            <summary><span>Patterns</span><small>structure and stance</small></summary>
+            <div class="pattern-index" data-patterns></div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section revision" id="revision" aria-labelledby="revision-title">
+      <div class="shell revision-grid">
+        <div class="revision-copy reveal">
+          <span class="section-number">06 / Revision artifact</span>
+          <h2 id="revision-title">Make the second pass inspectable.</h2>
+          <p>When the last pass changes several sentences or touches a central claim, Stop Slop can build a small HTML proof with the first draft, final draft, and sentence-level diff.</p>
+          <a class="text-link" href="https://github.com/welttowelt/stop-slop-refined/blob/main/references/revision-artifact.md" target="_blank" rel="noopener">Open the workflow <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="diff-demo reveal">
+          <div class="diff-tabs" role="tablist" aria-label="Revision artifact preview">
+            <button role="tab" aria-selected="true" data-diff-tab="first">First draft</button>
+            <button role="tab" aria-selected="false" data-diff-tab="final">Final draft</button>
+            <button role="tab" aria-selected="false" data-diff-tab="diff">Diff</button>
+          </div>
+          <div class="diff-paper active" data-diff-panel="first"><p>This comprehensive platform provides a seamless way to approve expenses from the receipt review screen.</p></div>
+          <div class="diff-paper" data-diff-panel="final"><p>Reviewers can approve an expense from the same screen where they check the receipt.</p></div>
+          <div class="diff-paper" data-diff-panel="diff"><p><del>This comprehensive platform provides a seamless way to approve expenses from the receipt review screen.</del> <ins>Reviewers can approve an expense from the same screen where they check the receipt.</ins></p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section install" id="install" aria-labelledby="install-title">
+      <div class="shell install-grid">
+        <div class="install-copy reveal">
+          <span class="section-number">07 / Install</span>
+          <h2 id="install-title">Put it where you write.</h2>
+          <p>The core stays short. Open a reference only when the draft needs the detail.</p>
+          <div class="package-list" aria-label="Package contents">
+            <span>SKILL.md</span><span>5 references</span><span>revision builder</span><span>MIT</span>
+          </div>
+        </div>
+        <div class="terminal reveal">
+          <div class="install-tabs" role="tablist" aria-label="Install targets">
+            <button role="tab" aria-selected="true" data-install-tab="codex">Codex</button>
+            <button role="tab" aria-selected="false" data-install-tab="claude">Claude Code</button>
+            <button role="tab" aria-selected="false" data-install-tab="project">Project</button>
+          </div>
+          <div class="install-pane active" data-install-pane="codex">
+            <pre><code>mkdir -p ~/.codex/skills
 git clone https://github.com/welttowelt/stop-slop-refined.git ~/.codex/skills/stop-slop</code></pre>
-          <button class="copy" type="button" data-copy>copy</button>
-        </div>
-        <div class="inst-pane" data-inst-pane="projects">
-          <p>use <code>SKILL.md</code> as the main instruction file. pull in files under <code>references/</code> for the word list, the pattern list, or examples.</p>
-          <pre><code><span class="c-comment"># attach as project files</span>
-SKILL.md
-references/words.md
-references/patterns.md
-references/examples.md</code></pre>
-          <button class="copy" type="button" data-copy>copy</button>
-        </div>
-        <div class="inst-pane" data-inst-pane="chat">
-          <p>paste the key parts of <code>SKILL.md</code> into a project instruction, custom instruction, or the first message of a thread.</p>
-          <pre><code><span class="c-comment"># trigger phrases</span>
-rewrite this with stop slop
-audit this for ai writing patterns
-detect only. do not rewrite
-use stop slop on this memo</code></pre>
-          <button class="copy" type="button" data-copy>copy</button>
+            <button type="button" data-copy>Copy</button>
+          </div>
+          <div class="install-pane" data-install-pane="claude">
+            <pre><code>mkdir -p ~/.claude/skills
+git clone https://github.com/welttowelt/stop-slop-refined.git ~/.claude/skills/stop-slop</code></pre>
+            <button type="button" data-copy>Copy</button>
+          </div>
+          <div class="install-pane" data-install-pane="project">
+            <pre><code>Use SKILL.md as the main instruction file.
+Add a reference only when the task needs it.</code></pre>
+            <button type="button" data-copy>Copy</button>
+          </div>
         </div>
       </div>
+    </section>
+
+    <section class="credits" aria-labelledby="credits-title">
+      <div class="shell credits-grid">
+        <div>
+          <span class="section-number">Sources</span>
+          <h2 id="credits-title">Built in public.</h2>
+        </div>
+        <p>Stop Slop draws from public anti-slop skills by Hardik Pandya, Conor Bronsdon, Siqi Chen, and Jalaaldeen. Version 3 also credits Shreya Shankar's pinned Plain Writing skill for the high-level plain-writing and revision-record method. The <a href="https://github.com/welttowelt/stop-slop-refined/blob/main/ATTRIBUTION.md" target="_blank" rel="noopener">attribution file</a> records the exact license boundaries.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="shell footer-grid">
+      <a class="wordmark footer-mark" href="#top"><span>stop</span><span class="wordmark-slop">slop</span><sup>3</sup></a>
+      <p>Plain, source-safe prose. MIT licensed.</p>
+      <div class="footer-links">
+        <a href="https://github.com/welttowelt/stop-slop-refined/blob/main/SKILL.md">SKILL.md</a>
+        <a href="https://github.com/welttowelt/stop-slop-refined">Repository</a>
+        <a href="https://github.com/welttowelt/stop-slop-refined/blob/main/LICENSE">License</a>
+      </div>
     </div>
+  </footer>
 
-    <div class="repo-tree">
-      <header>repo contents</header>
-<pre><code>stop-slop-refined/
-├── SKILL.md
-├── docs/
-│   ├── site-data.js
-│   ├── index.html
-│   ├── app.js
-│   └── styles.css
-├── references/
-│   ├── words.md
-│   ├── patterns.md
-│   └── examples.md
-├── scripts/
-│   └── generate-site-data.mjs
-├── ATTRIBUTION.md
-├── LICENSE
-└── README.md</code></pre>
-    </div>
-  </div>
-</section>
-
-<!-- CREDITS -->
-<section id="credits" class="section credits" aria-labelledby="cr-title">
-  <div class="wrap">
-    <div class="sec-head">
-      <span class="sec-num">§ 09</span>
-      <h2 id="cr-title" class="sec-title">credits.</h2>
-      <p class="sec-kicker">this is a fresh public consolidation. it takes inspiration from the following public work.</p>
-    </div>
-
-    <ul class="cred-grid">
-      <li class="cred">
-        <span class="cred-kind">primary</span>
-        <h3>Hardik Pandya</h3>
-        <p class="cred-repo"><a href="https://github.com/hardikpandya/stop-slop" target="_blank" rel="noopener">hardikpandya/stop-slop <span aria-hidden="true">↗</span></a></p>
-        <p class="cred-note">public framing of a compact anti-slop skill, skill packaging, examples-first approach.</p>
-        <span class="cred-lic">mit</span>
-      </li>
-      <li class="cred">
-        <span class="cred-kind">primary</span>
-        <h3>Conor Bronsdon</h3>
-        <p class="cred-repo"><a href="https://github.com/conorbronsdon/avoid-ai-writing" target="_blank" rel="noopener">conorbronsdon/avoid-ai-writing <span aria-hidden="true">↗</span></a></p>
-        <p class="cred-note">stronger rewrite vs detect split, broader audit framing, pattern clustering, richer public documentation.</p>
-        <span class="cred-lic">mit</span>
-      </li>
-      <li class="cred">
-        <span class="cred-kind">primary</span>
-        <h3>Siqi Chen</h3>
-        <p class="cred-repo"><a href="https://github.com/blader/humanizer" target="_blank" rel="noopener">blader/humanizer <span aria-hidden="true">↗</span></a></p>
-        <p class="cred-note">emphasis on voice calibration, second-pass checking, and wikipedia-informed pattern review.</p>
-        <span class="cred-lic">mit</span>
-      </li>
-      <li class="cred">
-        <span class="cred-kind">additional</span>
-        <h3>Jalaaldeen</h3>
-        <p class="cred-repo"><a href="https://github.com/jalaalrd/anti-ai-slop-writing" target="_blank" rel="noopener">jalaalrd/anti-ai-slop-writing <span aria-hidden="true">↗</span></a></p>
-        <p class="cred-note">pattern grouping ideas and public anti-slop framing. inspiration only.</p>
-        <span class="cred-lic">mit*</span>
-      </li>
-    </ul>
-
-    <p class="cred-foot">
-      this repo uses original wording written for public release. if any maintainer wants a wording change, stronger credit, or narrower attribution, open an issue.
-    </p>
-  </div>
-</section>
-
-</main>
-
-<footer class="foot">
-  <div class="wrap foot-wrap">
-    <div class="foot-col">
-      <a class="wordmark wordmark-sm" href="#top" aria-label="stop slop">
-        <span class="wm-stop">stop</span><span class="wm-sep">/</span><span class="wm-slop">slop</span><span class="wm-dot">.</span>
-      </a>
-      <p class="foot-tag">a baseline editing skill. not a personal voice layer.</p>
-    </div>
-    <div class="foot-col foot-links">
-      <a href="https://github.com/welttowelt/stop-slop-refined" target="_blank" rel="noopener">github</a>
-      <a href="https://github.com/welttowelt/stop-slop-refined/blob/main/SKILL.md" target="_blank" rel="noopener">skill.md</a>
-      <a href="https://github.com/welttowelt/stop-slop-refined/blob/main/ATTRIBUTION.md" target="_blank" rel="noopener">attribution</a>
-      <a href="https://github.com/welttowelt/stop-slop-refined/blob/main/LICENSE" target="_blank" rel="noopener">license</a>
-    </div>
-    <div class="foot-col foot-meta">
-      <p>mit. written for public use.</p>
-      <p class="foot-set">set in ibm plex sans and ibm plex mono.</p>
-    </div>
-  </div>
-</footer>
-
-<script src="site-data.js"></script>
-<script src="app.js"></script>
+  <script src="site-data.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>

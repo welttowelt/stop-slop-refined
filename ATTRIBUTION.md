@@ -1,43 +1,42 @@
 # Attribution
 
-This repo is a fresh public consolidation. It was written for public sharing and excludes private overlays and personal voice systems.
+This repository uses original wording written for public release. It excludes private voice systems and team-specific guidance.
 
-It takes inspiration from the following public work:
-
-## Primary inspirations
+## MIT-licensed foundations
 
 ### Hardik Pandya
 
-- Repo: `hardikpandya/stop-slop`
-- Link: https://github.com/hardikpandya/stop-slop
-- Contribution to this repo: public framing of a compact anti-slop skill, skill packaging, examples-first approach
+- Repository: [hardikpandya/stop-slop](https://github.com/hardikpandya/stop-slop)
+- Influence: compact skill packaging and an examples-first approach
 - License observed during review: MIT
 
 ### Conor Bronsdon
 
-- Repo: `conorbronsdon/avoid-ai-writing`
-- Link: https://github.com/conorbronsdon/avoid-ai-writing
-- Contribution to this repo: stronger rewrite vs detect split, broader audit framing, pattern clustering, richer public documentation
+- Repository: [conorbronsdon/avoid-ai-writing](https://github.com/conorbronsdon/avoid-ai-writing)
+- Influence: rewrite and detect modes, audit framing, and pattern groups
 - License observed during review: MIT
 
 ### Siqi Chen
 
-- Repo: `blader/humanizer`
-- Link: https://github.com/blader/humanizer
-- Contribution to this repo: emphasis on voice calibration, second-pass checking, and Wikipedia-informed pattern review
+- Repository: [blader/humanizer](https://github.com/blader/humanizer)
+- Influence: voice calibration and a second review pass
 - License observed during review: MIT
-
-## Additional inspiration
 
 ### Jalaaldeen
 
-- Repo: `jalaalrd/anti-ai-slop-writing`
-- Link: https://github.com/jalaalrd/anti-ai-slop-writing
-- Contribution to this repo: pattern grouping ideas and public anti-slop framing
-- License note: the public README referenced MIT during review, but a separate license file was not confirmed in the shallow check used here
-- Treatment in this repo: inspiration only; this repo does not intentionally copy text from that source
+- Repository: [jalaalrd/anti-ai-slop-writing](https://github.com/jalaalrd/anti-ai-slop-writing)
+- Influence: public anti-slop framing and pattern grouping
+- License note: the public README referenced MIT during review, but a separate license file was not confirmed in the shallow check used for the first release
 
-## Notes
+## Plain-writing method reference
 
-- This repo uses original wording written for public release.
-- If any maintainer of an inspiration repo wants a wording change, stronger credit, or narrower attribution, open an issue and it can be adjusted.
+### Shreya Shankar
+
+- Repository: [shreyashankar/plain-writing-skill](https://github.com/shreyashankar/plain-writing-skill)
+- Pinned source: [`d9f45d3e.../SKILL.md`](https://github.com/shreyashankar/plain-writing-skill/blob/d9f45d3e567bfae2ebd7ebed344069f4ed0dd99f/SKILL.md)
+- Influence: plain language as the default, a second reader pass, connected-clause checks, technical-term explanations, and an inspectable revision record
+- License boundary: no license file was present at the pinned revision. This repository uses the high-level method as a reference and expresses the rules, examples, template, and implementation in new wording and code.
+
+## Boundary
+
+The MIT license in this repository covers this repository's original material and the MIT-compatible foundations above. It does not relicense any unlicensed source.

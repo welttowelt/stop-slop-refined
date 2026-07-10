@@ -1,102 +1,130 @@
-# Examples
+# Examples and regression cases
 
-## Example 1
+Each rewrite preserves the information in the draft. When the source is incomplete, the repair keeps the gap visible instead of inventing evidence.
 
-**Before**
-
-> Here's the thing: building products is hard. Not because the tech is hard. Because people are hard. Let that sink in.
-
-**After**
-
-> Building products is hard. The tech is manageable. People are not.
-
-**What changed**
-
-- removed throat-clearing
-- removed contrast template
-- removed emphasis crutch
-
-## Example 2
+## Example 1: filler and formula
 
 **Before**
 
-> In today's fast-moving landscape, teams need to leverage robust workflows in order to navigate complexity.
+> Here's the thing: the rollout is not a tooling problem. It is a review problem. Let that sink in.
 
 **After**
 
-> Teams need workflows that hold up under pressure.
+> The rollout is blocked because two reviewers still need to approve it.
 
-**What changed**
+**Why**
 
-- cut stacked buzzwords
-- removed filler
-- replaced abstract phrasing with a direct claim
+The source already named review as the blocker. The rewrite removes the setup and makes the blocker concrete without adding a new cause.
 
-## Example 3
+## Example 2: product puffery
 
 **Before**
 
-> Great question! This platform serves as a comprehensive hub for modern collaboration. I hope this helps.
+> This comprehensive platform provides a seamless way to approve expenses from the receipt review screen.
 
 **After**
 
-> This platform brings docs, chat, and task tracking into one place.
+> Reviewers can approve an expense from the same screen where they check the receipt.
 
-**What changed**
+**Why**
 
-- removed chatbot artifacts
-- replaced inflated verbs
-- named the actual product behavior
+The rewrite keeps the product behavior and removes decorative claims.
 
-## Example 4
+## Example 3: technical term preserved
 
 **Before**
 
-> Industry observers note that adoption has accelerated, showcasing the transformative potential of the product.
+> The service uses idempotency keys. An idempotency key prevents the same payment request from running twice when a client retries it.
 
 **After**
 
-> Usage doubled over six months after the team cut setup time from two days to twenty minutes.
+> The service uses idempotency keys, which stop a retried payment request from running twice.
 
-**What changed**
+**Why**
 
-- replaced vague attribution with a concrete claim
-- cut significance inflation
-- replaced abstract praise with a measurable outcome
+The technical term is necessary and is explained once.
 
-## Example 5
+## Example 4: connected clauses kept together
 
 **Before**
 
-> Let's dive into five reasons this matters:
->
-> 1. speed
-> 2. quality
-> 3. innovation
-> 4. alignment
-> 5. growth
+> The worker polls the file. It reacts when the file changes.
 
 **After**
 
-> This matters for two reasons. It cuts review time, and it reduces the number of decisions teams have to revisit later.
+> The worker polls the file and reacts when it changes.
 
-**What changed**
+**Why**
 
-- removed signposting
-- cut inflated list
-- kept only the points that carried real meaning
+The two clauses describe one action and are easier to follow together.
 
-## Example 6
+## Example 5: responsibility named
 
 **Before**
 
-> The future looks bright as we move forward into this new era of possibility.
+> The launch was delayed after the risk was reviewed.
 
 **After**
 
-> The next milestone is simple: ship the rollout, measure retention, and see if users come back without prompting.
+> The release team delayed the launch after reviewing the risk.
 
-**What changed**
+**Why**
 
-- removed generic conclusion
-- replaced mood with an actual next step
+The draft names no actor. Use this rewrite only when the release team is known from the source. Otherwise keep the actor unknown and ask for it.
+
+## Example 6: literal subject kept
+
+**Before**
+
+> The API returns a 409 error when the request reuses an idempotency key with different data.
+
+**After**
+
+> The API returns a 409 error when the request reuses an idempotency key with different data.
+
+**Why**
+
+The literal subject is clear. Forcing a human actor would make the sentence worse.
+
+## Example 7: vague source boundary
+
+**Before**
+
+> Industry observers say adoption doubled after launch.
+
+**After in detect mode**
+
+> Name the observers and the adoption dataset, or remove the claim.
+
+**Why**
+
+The draft gives no source. A rewrite cannot safely manufacture one.
+
+## Example 8: plain does not mean short
+
+**Before**
+
+> The retry passed after cache invalidation, confirming the issue.
+
+**After**
+
+> The first request used stale cached data and failed. The team cleared the cache, ran the same request again, and it passed. This result points to the cache as the likely cause, but it does not prove the cause by itself.
+
+**Why**
+
+Use the longer version only when the source supports each step. It restores the sequence and keeps the uncertainty.
+
+## Regression cases
+
+Run these after any change to the core skill or references.
+
+| Case | Input | Mode | Expected behavior |
+|---|---|---|---|
+| 1 | A paragraph with several Tier-1 words but clear facts | rewrite | Replace decorative wording and preserve every fact. |
+| 2 | `The API returns a 409 error.` | rewrite | Keep the literal subject and technical result. |
+| 3 | A technical term followed by a plain definition | rewrite | Keep the term and explain it once. |
+| 4 | `Experts say the market grew 40%.` with no source | rewrite | Do not invent a source. Narrow, flag, or ask. |
+| 5 | A factual three-item list | rewrite | Keep all three items when each is required. |
+| 6 | A deliberate fragment in a supplied personal voice sample | rewrite | Keep it when the format and voice earn it. |
+| 7 | A polished AI-first social draft with no live trigger | detect | Flag AI-first anchoring and synthetic social fit before word cleanup. |
+| 8 | A second pass changes a central claim sentence | rewrite | Create a revision artifact or explain that review is needed. |

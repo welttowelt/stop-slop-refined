@@ -11,32 +11,40 @@ window.STOP_SLOP_DATA = {
       "use"
     ],
     [
+      "leverage (verb)",
+      "use"
+    ],
+    [
       "robust",
       "strong, reliable, solid"
     ],
     [
       "comprehensive",
-      "complete, thorough"
+      "complete, thorough, or name what is included"
     ],
     [
       "pivotal",
-      "important, central"
+      "name the concrete change or consequence"
     ],
     [
       "transformative",
       "describe what changed"
     ],
     [
-      "landscape",
-      "field, market, space"
+      "landscape (metaphor)",
+      "field, market, industry, space"
     ],
     [
       "tapestry",
       "describe the actual complexity"
     ],
     [
+      "realm",
+      "area, field, domain"
+    ],
+    [
       "paradigm",
-      "model, approach"
+      "model, approach, framework"
     ],
     [
       "embark",
@@ -48,19 +56,19 @@ window.STOP_SLOP_DATA = {
     ],
     [
       "testament to",
-      "shows, proves"
+      "shows, proves, demonstrates"
     ],
     [
       "seamless",
-      "smooth, simple, without friction"
+      "name the missing friction"
     ],
     [
       "impactful",
-      "effective, meaningful"
+      "describe the effect"
     ],
     [
       "actionable",
-      "practical, concrete"
+      "practical, concrete, or name the action"
     ],
     [
       "thought leader",
@@ -68,7 +76,7 @@ window.STOP_SLOP_DATA = {
     ],
     [
       "best practices",
-      "what works, standard approach"
+      "standard method, proven method, or name the practice"
     ],
     [
       "in order to",
@@ -92,15 +100,15 @@ window.STOP_SLOP_DATA = {
     ],
     [
       "ascertain",
-      "determine, find out"
+      "find out, determine"
     ],
     [
       "endeavor",
       "effort, attempt"
     ],
     [
-      "deep dive",
-      "look at, examine"
+      "deep dive / dive into",
+      "examine, look at"
     ],
     [
       "unpack",
@@ -112,11 +120,35 @@ window.STOP_SLOP_DATA = {
     ],
     [
       "watershed moment",
-      "turning point"
+      "describe the change"
     ],
     [
       "at its core",
       "cut it and state the point"
+    ],
+    [
+      "the future looks bright",
+      "cut it or name the next step"
+    ],
+    [
+      "only time will tell",
+      "state the uncertainty or cut it"
+    ],
+    [
+      "vibrant / thriving",
+      "give the evidence or cut it"
+    ],
+    [
+      "showcasing",
+      "showing, demonstrating, or cut it"
+    ],
+    [
+      "holistic",
+      "complete, or name what is included"
+    ],
+    [
+      "learnings",
+      "lessons, findings"
     ]
   ],
   "tier2": [
@@ -134,11 +166,11 @@ window.STOP_SLOP_DATA = {
     ],
     [
       "empower",
-      "enable"
+      "enable, allow"
     ],
     [
       "streamline",
-      "simplify"
+      "simplify, shorten"
     ],
     [
       "bolster",
@@ -178,7 +210,7 @@ window.STOP_SLOP_DATA = {
     ],
     [
       "illuminate",
-      "clarify"
+      "clarify, show"
     ],
     [
       "cornerstone",
@@ -186,7 +218,7 @@ window.STOP_SLOP_DATA = {
     ],
     [
       "paramount",
-      "most important"
+      "name the priority"
     ],
     [
       "poised",
@@ -252,9 +284,9 @@ window.STOP_SLOP_DATA = {
       "title": "binary contrast",
       "examples": [
         "not x, but y",
-        "the real issue is not x. it's y."
+        "the issue is not x. it is y."
       ],
-      "fix": "state `y` directly."
+      "fix": "state the full point directly. Keep a contrast only when both sides carry necessary information."
     },
     {
       "group": "sentence",
@@ -262,16 +294,16 @@ window.STOP_SLOP_DATA = {
       "examples": [
         "not a tool. not a workflow. a mindset."
       ],
-      "fix": "say the actual point without the runway."
+      "fix": "remove the runway and name the thing."
     },
     {
       "group": "sentence",
       "title": "rhetorical question transition",
       "examples": [
-        "so why does this matter?",
+        "so why does this work?",
         "but what does this mean for teams?"
       ],
-      "fix": "if you know the answer, say it."
+      "fix": "state the answer. Keep a genuine question when the text will answer it through inquiry."
     },
     {
       "group": "sentence",
@@ -281,63 +313,90 @@ window.STOP_SLOP_DATA = {
         "in this section",
         "here's what you need to know"
       ],
-      "fix": "cut the announcement and start with the point."
+      "fix": "start with the point."
     },
     {
       "group": "sentence",
       "title": "reasoning-chain leakage",
       "examples": [
         "let me think step by step",
-        "working through this logically",
-        "step 1:"
+        "working through this logically"
       ],
-      "fix": "give the conclusion, then the reasoning."
+      "fix": "give the conclusion and the useful reasoning, not the drafting process."
+    },
+    {
+      "group": "sentence",
+      "title": "cramped logic",
+      "examples": [
+        "the test failed, the cache was stale, and the retry passed"
+      ],
+      "fix": "split distinct steps when a first-time reader needs the sequence or causal boundary."
     },
     {
       "group": "structural",
-      "title": "rule of three everywhere",
-      "examples": [],
-      "fix": "use one, two, or four when that fits better."
+      "title": "forced rule of three",
+      "examples": [
+        "fast, flexible, and future-ready"
+      ],
+      "fix": "keep the items the content requires. Do not pad a list for cadence."
     },
     {
       "group": "structural",
       "title": "uniform sentence length",
-      "examples": [],
-      "fix": "vary rhythm on purpose."
+      "examples": [
+        "several sentences with the same shape and landing point"
+      ],
+      "fix": "vary rhythm when the draft sounds templated. Do not change a technical sequence that benefits from repetition."
     },
     {
       "group": "structural",
       "title": "uniform paragraph shape",
-      "examples": [],
-      "fix": "vary openings, paragraph length, and landing points."
+      "examples": [
+        "claim, explanation, example, transition on repeat"
+      ],
+      "fix": "vary openings, paragraph length, and landing points when the argument allows it."
     },
     {
       "group": "structural",
       "title": "heading plus restatement",
       "examples": [
-        "heading: `performance",
-        "next line: `performance matters."
+        "performance` followed by `performance is important."
       ],
-      "fix": "let the heading do its job."
+      "fix": "let the heading do its job and start with new information."
     },
     {
       "group": "structural",
       "title": "list inflation",
       "examples": [
-        "5 ways ai is changing x",
-        "each bullet says almost nothing"
+        "five thin bullets built from one useful point"
       ],
-      "fix": "cut to the few points that actually matter."
+      "fix": "keep the points that change the reader's understanding or action."
+    },
+    {
+      "group": "structural",
+      "title": "over-compression",
+      "examples": [
+        "a polished one-liner that removes the mechanism, limit, or source boundary"
+      ],
+      "fix": "restore the bridge a first-time reader needs."
     },
     {
       "group": "voice",
-      "title": "false agency",
+      "title": "hidden responsibility",
       "examples": [
-        "the data tells us",
-        "the market decided",
-        "the complaint became a fix"
+        "mistakes were made",
+        "the decision was taken"
       ],
-      "fix": "name the human actor when the actor matters."
+      "fix": "name the actor when the sentence assigns judgment, intent, choice, or responsibility."
+    },
+    {
+      "group": "voice",
+      "title": "forced human actor",
+      "examples": [
+        "the team made the API return an error",
+        "the authors used the paper to argue"
+      ],
+      "fix": "keep an ordinary literal subject when it is clearer. An API can return an error and a paper can argue a position."
     },
     {
       "group": "voice",
@@ -347,17 +406,16 @@ window.STOP_SLOP_DATA = {
         "research shows",
         "industry observers note"
       ],
-      "fix": "cite the source or cut the claim."
+      "fix": "name the source and result, narrow the claim, or cut it."
     },
     {
       "group": "voice",
       "title": "significance inflation",
       "examples": [
         "a pivotal moment in the evolution of",
-        "a watershed moment",
         "a testament to"
       ],
-      "fix": "describe what happened and stop."
+      "fix": "describe what happened and its concrete consequence."
     },
     {
       "group": "voice",
@@ -367,40 +425,65 @@ window.STOP_SLOP_DATA = {
         "thriving ecosystem",
         "nestled in"
       ],
-      "fix": "describe the thing plainly."
+      "fix": "describe the place, product, or activity plainly and supply evidence for growth claims."
     },
     {
       "group": "voice",
-      "title": "emotional flatline",
+      "title": "announced emotion",
       "examples": [
         "what surprised me most was",
         "i was fascinated to discover"
       ],
-      "fix": "make the content create the feeling."
+      "fix": "use the evidence, scene, or tradeoff to create the response. Keep the sentence when the personal reaction is the point."
+    },
+    {
+      "group": "voice",
+      "title": "model-average claim",
+      "examples": [
+        "ai will reshape how every team works",
+        "trust is the foundation of innovation"
+      ],
+      "fix": "replace the broad truth with the writer's actual observation, constraint, decision, or evidence."
+    },
+    {
+      "group": "voice",
+      "title": "synthetic social fit",
+      "examples": [
+        "a polished post that could sit under any announcement"
+      ],
+      "fix": "answer the live trigger and state the writer's specific stance."
     },
     {
       "group": "formatting",
-      "title": "em dash overuse",
-      "examples": [],
-      "fix": ""
+      "title": "decorative dash use",
+      "examples": [
+        "dashes added to manufacture a pause in every paragraph"
+      ],
+      "fix": "use a period, comma, or connective when it reads more naturally. Preserve syntax and meaningful punctuation."
     },
     {
       "group": "formatting",
       "title": "bold spam",
-      "examples": [],
-      "fix": ""
+      "examples": [
+        "the first phrase of every bullet is bold without a structural reason"
+      ],
+      "fix": "use hierarchy instead of decoration."
     },
     {
       "group": "formatting",
       "title": "emoji bullets",
-      "examples": [],
-      "fix": ""
+      "examples": [
+        "emoji used as the default list marker in professional prose"
+      ],
+      "fix": "match the destination. Keep them when the platform and writer use them naturally."
     },
     {
       "group": "formatting",
       "title": "markdown in plain text",
-      "examples": [],
-      "fix": ""
+      "examples": [
+        "**bold** left inside an email or direct message"
+      ],
+      "fix": "remove markup that the destination will not render."
     }
   ],
   "detectorPatterns": [
@@ -450,11 +533,6 @@ window.STOP_SLOP_DATA = {
       "flags": "gi"
     },
     {
-      "label": "false agency",
-      "source": "\\b(?:the data|the market|the complaint|the product) (?:tells us|decided|became|knows)\\b",
-      "flags": "gi"
-    },
-    {
       "label": "vague attribution",
       "source": "\\b(?:experts believe|experts say|research shows|industry observers note|studies show)\\b",
       "flags": "gi"
@@ -473,21 +551,6 @@ window.STOP_SLOP_DATA = {
       "label": "promotional description",
       "source": "\\bnestled in\\b",
       "flags": "gi"
-    },
-    {
-      "label": "emotional flatline",
-      "source": "\\bwhat surprised me most was\\b",
-      "flags": "gi"
-    },
-    {
-      "label": "emotional flatline",
-      "source": "\\bi was fascinated to discover\\b",
-      "flags": "gi"
-    },
-    {
-      "label": "em dash overuse",
-      "source": "—",
-      "flags": "g"
     },
     {
       "label": "markdown in plain text",

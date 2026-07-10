@@ -1,38 +1,39 @@
 # Stop Slop
 
-A public writing skill for removing common AI patterns from prose.
+A public writing skill for plain, source-safe prose that removes formulaic AI writing without flattening meaning or voice.
 
-Use it to audit drafts, rewrite content, or pressure-test writing that feels too polished, too generic, or too obviously machine-generated.
+[Open the interactive guide](https://welttowelt.github.io/stop-slop-refined/) or install the skill locally.
 
-This repo is intentionally generic. It does **not** include private overlays, personal voice systems, or team-specific guidance.
+## Version 3
 
-## What it does
+- Uses plain writing as the neutral baseline.
+- Preserves claims, uncertainty, source boundaries, and necessary technical terms.
+- Checks who supplied the first creative shape before editing an AI-assisted draft.
+- Returns clean prose before audit scaffolding.
+- Provides corrected examples, regression cases, and an optional HTML revision artifact.
+- Keeps personal and team-specific voice rules out of the public package.
 
-- flags common AI writing patterns
-- supports two modes: `rewrite` and `detect`
-- separates word-level issues from structural issues
-- encourages a second pass instead of a one-shot cleanup
-- works as a local skill or as a prompt pack for ChatGPT, Claude, Codex, and similar tools
-
-## Repo contents
+## Package
 
 ```text
 stop-slop-refined/
 ├── SKILL.md
-├── docs/
-│   ├── site-data.js
-│   ├── index.html
-│   ├── app.js
-│   └── styles.css
 ├── references/
 │   ├── words.md
 │   ├── patterns.md
-│   └── examples.md
+│   ├── examples.md
+│   ├── ai-role-and-reader-fit.md
+│   └── revision-artifact.md
+├── assets/
+│   └── revision_template.html
 ├── scripts/
+│   ├── build_revision_artifact.mjs
 │   └── generate-site-data.mjs
+├── docs/
+│   └── interactive GitHub Pages site
 ├── ATTRIBUTION.md
-├── LICENSE
-└── README.md
+├── CHANGELOG.md
+└── LICENSE
 ```
 
 ## Install
@@ -53,41 +54,34 @@ git clone https://github.com/welttowelt/stop-slop-refined.git ~/.codex/skills/st
 
 ### ChatGPT or Claude projects
 
-Use `SKILL.md` as the main instruction file. Pull in the files under `references/` when you want the word list, the pattern list, or examples.
+Use `SKILL.md` as the main instruction file. Add a reference only when the task needs its detail.
 
-### Plain chat use
+## Modes
 
-Paste the key parts of `SKILL.md` into a project instruction, custom instruction, or the first message of a thread.
+- `rewrite` returns clean prose first and keeps the audit backstage.
+- `detect` flags the exact issue, the reader consequence, and the smallest repair.
 
-## Usage
+## Revision artifact
 
-Examples:
+For a substantive second pass, build an inspectable HTML diff:
 
-- `rewrite this with stop slop`
-- `audit this for ai writing patterns`
-- `detect only. do not rewrite`
-- `use stop slop on this memo`
+```bash
+node scripts/build_revision_artifact.mjs \
+  --data /path/to/revision-data.json \
+  --output /tmp/stop-slop-revision.html
+```
 
-## Design choices
+## Development
 
-- short core file
-- references split by job
-- no personal voice layer
-- no private company context
-- no influencer-style fluff in the skill itself
-
-## Maintaining the site data
-
-If you change `references/words.md` or `references/patterns.md`, regenerate the site data:
+The browser detector reads generated data from the canonical word and pattern references.
 
 ```bash
 node scripts/generate-site-data.mjs
+git diff --exit-code -- docs/site-data.js
 ```
 
-## Credits
+Serve `docs/` with any static file server.
 
-This repo was built with inspiration from several public projects. See [ATTRIBUTION.md](ATTRIBUTION.md) for source links, authors, and license notes.
+## Attribution and license
 
-## License
-
-MIT. See [LICENSE](LICENSE).
+See [ATTRIBUTION.md](ATTRIBUTION.md) for the sources and license boundaries. This repository is MIT licensed. A source without its own license does not become MIT licensed through attribution.
