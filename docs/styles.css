@@ -234,9 +234,9 @@ pre {
 .hero-grid {
   min-height: 720px;
   display: grid;
-  grid-template-columns: minmax(0, 7fr) minmax(420px, 5fr);
+  grid-template-columns: minmax(0, 1.65fr) minmax(420px, 1fr);
   align-items: center;
-  gap: clamp(52px, 8vw, 120px);
+  gap: clamp(52px, 5vw, 76px);
   padding-block: 76px 96px;
 }
 
@@ -279,12 +279,12 @@ pre {
   margin: 0;
   font-family: var(--serif);
   font-weight: 700;
-  letter-spacing: -.07em;
+  letter-spacing: -.025em;
   text-transform: uppercase;
 }
 
 .hero h1 {
-  max-width: 780px;
+  max-width: 820px;
   font-size: clamp(4rem, 5.4vw, 5.75rem);
   line-height: .92;
 }
@@ -1513,11 +1513,7 @@ pre {
   transform: none;
 }
 
-@media (max-width: 1040px) {
-  :root {
-    --shell: min(100% - 36px, 900px);
-  }
-
+@media (max-width: 1120px) {
   .hero-grid {
     min-height: auto;
     grid-template-columns: 1fr;
@@ -1526,7 +1522,7 @@ pre {
   }
 
   .hero-copy {
-    max-width: 760px;
+    max-width: 820px;
   }
 
   .hero h1 {
@@ -1536,6 +1532,13 @@ pre {
   .proof-sheet {
     width: min(670px, calc(100% - 18px));
     margin-inline: auto;
+  }
+
+}
+
+@media (max-width: 1040px) {
+  :root {
+    --shell: min(100% - 36px, 900px);
   }
 
   .benefit-list,
