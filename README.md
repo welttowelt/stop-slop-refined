@@ -4,13 +4,15 @@ A public writing skill for plain, source-safe prose that removes formulaic AI wr
 
 [Open the interactive guide](https://welttowelt.github.io/stop-slop-refined/) or install the skill locally.
 
-## Version 3
+## Version 3.1
 
 - Uses plain writing as the neutral baseline.
 - Preserves claims, uncertainty, source boundaries, and necessary technical terms.
 - Checks who supplied the first creative shape before editing an AI-assisted draft.
+- Adds false-positive guards for technical terms, live rebuttals, factual triads, and clean detect passes.
+- Covers current model-era tells, paste artifacts, crypto boilerplate, and fake-casual social copy.
 - Returns clean prose before audit scaffolding.
-- Provides corrected examples, regression cases, and an optional HTML revision artifact.
+- Provides 13 regression cases and an optional HTML revision artifact.
 - Keeps personal and team-specific voice rules out of the public package.
 
 ## Package

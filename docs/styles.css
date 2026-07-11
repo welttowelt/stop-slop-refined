@@ -1079,6 +1079,38 @@ pre {
   border-top: 1px solid var(--line-dark);
 }
 
+.library-note {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: 28px;
+  margin-bottom: 42px;
+  padding: 20px 0;
+  border-top: 1px solid var(--line-dark);
+  border-bottom: 1px solid var(--line);
+}
+
+.library-note > span {
+  color: var(--red);
+  font-family: var(--mono);
+  font-size: .62rem;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.library-note p {
+  max-width: 960px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: .9rem;
+  line-height: 1.65;
+}
+
+.library-note code {
+  color: var(--ink);
+  font-size: .82em;
+}
+
 .library-entry {
   border-bottom: 1px solid var(--line);
 }
@@ -1842,6 +1874,12 @@ pre {
 
   .library-entry-head {
     min-height: 64px;
+  }
+
+  .library-note {
+    grid-template-columns: 1fr;
+    gap: 10px;
+    margin-bottom: 30px;
   }
 
   .library-entry-head h3 {

@@ -37,6 +37,14 @@ This repository uses original wording written for public release. It excludes pr
 - Influence: plain language as the default, a second reader pass, connected-clause checks, technical-term explanations, and an inspectable revision record
 - License boundary: no license file was present at the pinned revision. This repository uses the high-level method as a reference and expresses the rules, examples, template, and implementation in new wording and code.
 
+## Catalog reference
+
+### Wikipedia signs-of-AI-writing catalog
+
+- Reference: [Signs of AI writing](https://en.wikipedia.org/wiki/Wikipedia:Signs_of_AI_writing)
+- Influence: a dated comparison point for catalog maintenance and model-era drift
+- Boundary: used as a review checklist. This repository does not copy Wikipedia prose.
+
 ## Boundary
 
 The MIT license in this repository covers this repository's original material and the MIT-compatible foundations above. It does not relicense any unlicensed source.

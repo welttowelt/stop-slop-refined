@@ -5,8 +5,8 @@ import { fileURLToPath } from "node:url";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
 
-function collectSection(lines, startHeading) {
-  const start = lines.findIndex(line => line.startsWith(startHeading));
+function collectSection(lines, headingPattern) {
+  const start = lines.findIndex(line => headingPattern.test(line));
   if (start === -1) return [];
   const out = [];
   for (let i = start + 1; i < lines.length; i += 1) {
@@ -21,9 +21,9 @@ function parseWordsTable(lines) {
   return lines
     .filter(line => /^\|/.test(line))
     .filter(line => !/^\|\s*---/.test(line))
-    .filter(line => !/word or phrase/.test(line))
     .map(line => line.split("|").slice(1, -1).map(part => part.trim()))
-    .filter(parts => parts.length === 2 && parts[0] && parts[1]);
+    .filter(parts => parts.length === 2 && parts[0] && parts[1])
+    .filter(parts => !/^(?:replace|word|word or phrase)$/i.test(parts[0]));
 }
 
 function parseBullets(lines) {
@@ -35,21 +35,25 @@ function parseBullets(lines) {
 
 function parseWords(md) {
   const lines = md.split(/\r?\n/);
+  const tier3Section = collectSection(lines, /^## Tier 3\b/i);
+  const tier3Table = parseWordsTable(tier3Section);
   return {
-    tier1: parseWordsTable(collectSection(lines, "## Tier 1:")),
-    tier2: parseWordsTable(collectSection(lines, "## Tier 2:")),
-    tier3: parseBullets(collectSection(lines, "## Tier 3:")),
-    openers: parseBullets(collectSection(lines, "## Common bad openers")),
-    fillers: parseBullets(collectSection(lines, "## Common filler phrases"))
+    tier1: parseWordsTable(collectSection(lines, /^## Tier 1\b/i)),
+    tier2: parseWordsTable(collectSection(lines, /^## Tier 2\b/i)),
+    tier3: tier3Table.length ? tier3Table.map(([word]) => word) : parseBullets(tier3Section),
+    openers: parseBullets(collectSection(lines, /^## (?:Common bad openers|Banned sentence openers)\b/i)),
+    fillers: parseBullets(collectSection(lines, /^## (?:Common filler phrases|Banned phrases)\b/i))
   };
 }
 
 function normalizeGroup(heading) {
   const value = heading.replace(/^##\s+/, "").trim().toLowerCase();
-  if (value === "sentence patterns") return "sentence";
+  if (value === "sentence patterns" || value === "sentence-level patterns") return "sentence";
+  if (value === "word-use patterns") return "word use";
   if (value === "structural patterns") return "structural";
   if (value === "voice and stance patterns") return "voice";
   if (value === "formatting artifacts") return "formatting";
+  if (value === "chatbot-origin artifacts") return "chatbot";
   return value;
 }
 
@@ -84,7 +88,7 @@ function parsePatterns(md) {
         examples: [],
         fix: ""
       };
-      inExamples = false;
+      inExamples = true;
       continue;
     }
 
@@ -95,8 +99,8 @@ function parsePatterns(md) {
       continue;
     }
 
-    if (line.startsWith("Fix:")) {
-      current.fix = line.replace(/^Fix:\s*/, "").trim();
+    if (/^(?:\*\*)?Fix:(?:\*\*)?/i.test(line)) {
+      current.fix = line.replace(/^(?:\*\*)?Fix:(?:\*\*)?\s*/i, "").trim();
       inExamples = false;
       continue;
     }
@@ -111,21 +115,20 @@ function parsePatterns(md) {
 }
 
 function buildDetectorPatterns(patterns) {
-  const byTitle = new Map(patterns.map(pattern => [pattern.title, pattern]));
+  const byTitle = new Map(patterns.map(pattern => [pattern.title.toLowerCase(), pattern]));
   const regexMap = {
-    "binary contrast": [
+    "binary contrasts": [
       { source: "\\bnot (?:a )?[\\w'-]+[,.;:]\\s+(?:it'?s\\s+)?(?:a\\s+|but\\s+)[\\w'-]+", flags: "gi" }
     ],
-    "negative listing": [
+    "negative listing (rhetorical striptease)": [
       { source: "(?:^|[.!?]\\s+)(?:not\\s+[^.!?]+[.!?]\\s*){2,}", flags: "gi" }
     ],
-    "rhetorical question transition": [
+    "rhetorical questions as transitions": [
       { source: "\\b(?:so why|but what|but how) (?:does|do|is|are) this\\b", flags: "gi" }
     ],
-    signposting: [
+    "\"let's\" stalling transitions": [
       { source: "\\blet's dive in(?:to)?\\b", flags: "gi" },
-      { source: "\\bin this section\\b", flags: "gi" },
-      { source: "\\bhere'?s what you need to know\\b", flags: "gi" }
+      { source: "\\blet's (?:explore|break this down|take a look)\\b", flags: "gi" }
     ],
     "reasoning-chain leakage": [
       { source: "\\blet me think step by step\\b", flags: "gi" },
@@ -135,13 +138,13 @@ function buildDetectorPatterns(patterns) {
     "false agency": [
       { source: "\\b(?:the data|the market|the complaint|the product) (?:tells us|decided|became|knows)\\b", flags: "gi" }
     ],
-    "vague attribution": [
+    "vague attributions": [
       { source: "\\b(?:experts believe|experts say|research shows|industry observers note|studies show)\\b", flags: "gi" }
     ],
     "significance inflation": [
       { source: "\\b(?:a pivotal moment in the evolution of|a watershed moment|a testament to)\\b", flags: "gi" }
     ],
-    "promotional description": [
+    "promotional language": [
       { source: "\\b(?:vibrant|thriving|bustling) (?:hub|ecosystem|community)\\b", flags: "gi" },
       { source: "\\bnestled in\\b", flags: "gi" }
     ],
@@ -149,11 +152,20 @@ function buildDetectorPatterns(patterns) {
       { source: "\\bwhat surprised me most was\\b", flags: "gi" },
       { source: "\\bi was fascinated to discover\\b", flags: "gi" }
     ],
-    "markdown in plain text": [
+    "markdown in plain-text contexts": [
       { source: "\\*\\*[^*]+\\*\\*", flags: "g" }
     ],
-    "em dash overuse": [
-      { source: "—", flags: "g" }
+    "payoff announcements and snap questions": [
+      { source: "\\b(?:here'?s the kicker|the wild part|the crazy part|the best part\\?|the catch\\?|the result\\?)", flags: "gi" }
+    ],
+    "fake-casual register": [
+      { source: "\\b(?:hot take|plot twist|fun fact|pro tip|psa|unpopular opinion|real talk|spoiler):", flags: "gi" },
+      { source: "\\b(?:wild|insane|unhinged)\\.", flags: "gi" }
+    ],
+    "paste artifacts": [
+      { source: "\\butm_source=(?:chatgpt\\.com|claude\\.ai|perplexity\\.ai)\\b", flags: "gi" },
+      { source: "\\b(?:citeturn\\d+search\\d+|oaicite|contentReference)\\b", flags: "gi" },
+      { source: "\\[(?:Your Name|Company)\\]", flags: "g" }
     ]
   };
 
