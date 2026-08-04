@@ -1,0 +1,619 @@
+From 0ae372691f9a77e9e4e0515c8c16324d858ae952 Mon Sep 17 00:00:00 2001
+From: welttowelt <olivier.freuler@gmail.com>
+Date: Tue, 4 Aug 2026 10:13:10 +0000
+Subject: [PATCH] Add crypto/launch-genre patterns: 12 Tier 3 phrases, two
+ detectors, one judgment rule
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Gaps found running this catalog against a year of daily protocol and launch
+copy — the genre the Tier 3 phrase cluster rule already targets.
+
+- Twelve more Tier 3 phrases, on the existing density and cluster gates.
+  Terms of art (composability, capital efficiency, trustless, real-world
+  assets) held out on purpose: they name mechanisms, and listing them would
+  flag the writers who use them precisely.
+- dramatic-intro: the ad-break reveal ("Enter Aegis.", "Think Figma meets
+  GitHub."). Case-sensitive, sentence-initial, with a stop-list and a
+  sentence-ends-at-the-name anchor so "Enter your API key" stays clean.
+- self-qa-volley: "Is it fast? Yes. Is it cheap? Also yes." The unit written
+  twice, so one pair stays clean; spans spaces and tabs only, so a real FAQ
+  with each question on its own line stays clean.
+- Domain-term collision: judgment-only, CATEGORIES.md section C. A
+  replacement is wrong when the plainer word is already taken.
+
+Catalog 61 -> 64, engine 47 -> 49 types. Five fixtures, each pairing a true
+positive with the must-not-fire case that shaped the rule.
+---
+ CHANGELOG.md                                  | 12 +++
+ README.md                                     |  6 +-
+ SKILL.md                                      | 86 ++++++++++++++++++-
+ detector/CATEGORIES.md                        |  7 +-
+ detector/patterns.js                          | 81 +++++++++++++++++
+ detector/patterns.test.js                     | 72 ++++++++++++++++
+ package.json                                  |  2 +-
+ .../.claude-plugin/plugin.json                |  2 +-
+ .../skills/avoid-ai-writing/SKILL.md          | 86 ++++++++++++++++++-
+ 9 files changed, 345 insertions(+), 9 deletions(-)
+
+diff --git a/CHANGELOG.md b/CHANGELOG.md
+index df1e384..28c452f 100644
+--- a/CHANGELOG.md
++++ b/CHANGELOG.md
+@@ -4,6 +4,18 @@ All notable changes to this project are documented here.
+ 
+ ---
+ 
++## [3.24.0] — 2026-08-04
++
++### Added
++
++- **Twelve more Tier 3 phrases, from a year of daily protocol and launch copy.** `democratizing access to`, `permissionless innovation`, `powering the next generation of`, `purpose-built for`, `first-of-its-kind`, `industry-leading`, `battle-tested`, `unlocking new possibilities`, `mass adoption`, `the future of finance / money / the internet / work`, `bridging the gap between`, `institutional-grade`. Same density and cluster gates as the first ten, so a single use of any of them stays clean. Terms of art were held out on purpose — `composability`, `capital efficiency`, `trustless`, and `real-world assets` name specific mechanisms, and listing them would flag the writers who use them precisely. Every entry that did land is a wrapper: strip it and the sentence loses no checkable claim.
++- **Launch-copy dramatic introduction** (`dramatic-intro`). The ad-break reveal: a build-up sentence, then the product name as its own beat. "Enter Aegis." Plus the pitch-deck analogy form, "Think Figma meets GitHub." The name is the only content in the beat, so the drama carries a sentence with no claim in it. Case-sensitive and sentence-initial; the `Enter` branch subtracts key names and form-field nouns and requires the sentence to end at the name, which keeps it off "Enter your API key", "Enter Y to continue", and "Enter the build directory and run make".
++- **Self-QA volley** (`self-qa-volley`). "Is it fast? Yes. Is it cheap? Also yes." — the model posing the question the reader supposedly has and answering in one flattering word. One pair is ordinary emphasis and stays clean; the pattern is the unit written twice and only fires on the second beat. Real FAQs are the false-positive class and are structurally distinct: they put each question in a heading or list item, so the rule spans spaces and tabs only and stays inside a running paragraph.
++- **Domain-term collision** (judgment-only, no detector `type`). A replacement is wrong when the plainer word is already taken: `proof` and `proof point` as generic business nouns in cryptography writing, `receipts` next to a protocol that emits literal ones, `foundation` in a piece about a named Foundation. Whether a word collides depends on the audience, which is not in the text, so this is skill prose and listed under CATEGORIES.md §C rather than implemented as a regex.
++- Catalog moves to 64 / 112; the engine to 49 `type`s. Five new fixtures, each pairing a true positive with the must-not-fire case that shaped the rule.
++
++---
++
+ ## [3.23.0] — 2026-08-03
+ 
+ ### Added
+diff --git a/README.md b/README.md
+index ed44eb7..e940e73 100644
+--- a/README.md
++++ b/README.md
+@@ -39,8 +39,8 @@ A one-shot "make this sound human" prompt catches the obvious stuff. This skill
+ 
+ - **Structured audit** — returns identified issues with quoted text, the rewrite, a change summary, and a second-pass audit in four discrete sections. You see exactly what changed and why.
+ - **Two-pass detection** — the second pass re-reads the rewrite and catches patterns that survive the first edit: recycled transitions, lingering inflation, copula swaps that snuck through.
+-- **112-entry word replacement table across 3 tiers + 10 Tier 3 phrases** — not vibes-based. Every flagged word has a specific, plainer alternative. "Leverage" → "use." "Commence" → "start." Tier 1 words always flag, Tier 2 words flag when they cluster, Tier 3 words flag only at high density. Tier 1 itself splits into **1A frequency markers** (`delve`, `tapestry`) and **1B clarity edits** (`in order to`, `utilize`) — same fix, but only 1A is evidence about how a passage was produced, and 1B is weighted lower so a wordiness fix cannot push a document toward an AI classification. Tier 3 *phrases* (multi-word boilerplate like "the integration of," "decentralized compute") flag on per-phrase repetition or when 3+ distinct phrases stack in one piece — the LLM-self-varies-boilerplate shape.
+-- **61 pattern categories** — representative examples below, each with before/after. Includes structural detection (hashtag stuffing, bare-NP bullet lists, hedge-stacked predictions), AI-tool fingerprints (placeholders, citation markup, UTM params), rhythm/uniformity checks, conversational-register tells, and writer-side tests. The full catalog lives in [`SKILL.md`](./SKILL.md); this count is enforced against it in CI.
++- **112-entry word replacement table across 3 tiers + 22 Tier 3 phrases** — not vibes-based. Every flagged word has a specific, plainer alternative. "Leverage" → "use." "Commence" → "start." Tier 1 words always flag, Tier 2 words flag when they cluster, Tier 3 words flag only at high density. Tier 1 itself splits into **1A frequency markers** (`delve`, `tapestry`) and **1B clarity edits** (`in order to`, `utilize`) — same fix, but only 1A is evidence about how a passage was produced, and 1B is weighted lower so a wordiness fix cannot push a document toward an AI classification. Tier 3 *phrases* (multi-word boilerplate like "the integration of," "decentralized compute") flag on per-phrase repetition or when 3+ distinct phrases stack in one piece — the LLM-self-varies-boilerplate shape.
++- **64 pattern categories** — representative examples below, each with before/after. Includes structural detection (hashtag stuffing, bare-NP bullet lists, hedge-stacked predictions), AI-tool fingerprints (placeholders, citation markup, UTM params), rhythm/uniformity checks, conversational-register tells, and writer-side tests. The full catalog lives in [`SKILL.md`](./SKILL.md); this count is enforced against it in CI.
+ - **Detect mode** — flag patterns without rewriting. See which flags are real problems vs. judgment calls. Useful when patterns might be intentional or you're auditing content you don't want altered.
+ - **Works across platforms** — one `SKILL.md` runs in Claude Code, Cowork (as a plugin), OpenClaw, and Cursor (as a ported rule). See the install paths below.
+ 
+@@ -177,7 +177,7 @@ Trigger detect mode with: "detect," "flag only," "audit only," "just flag," "sca
+ 
+ ## Pattern reference
+ 
+-> Representative examples from the catalog — not the exhaustive list (that's [`SKILL.md`](./SKILL.md)). The skill's human-facing prose catalog and the [detector engine](./detector/) use **different counts on purpose**: the engine implements 47 `type` categories because it splits the vocabulary tiers and adds stylometric/fingerprint signals (punctuation distribution, function-word entropy, bypass-trick detection) that work as math over a document rather than as a rule you'd look up. The two are mapped in [`detector/CATEGORIES.md`](./detector/CATEGORIES.md); don't "fix" one count to match the other.
++> Representative examples from the catalog — not the exhaustive list (that's [`SKILL.md`](./SKILL.md)). The skill's human-facing prose catalog and the [detector engine](./detector/) use **different counts on purpose**: the engine implements 49 `type` categories because it splits the vocabulary tiers and adds stylometric/fingerprint signals (punctuation distribution, function-word entropy, bypass-trick detection) that work as math over a document rather than as a rule you'd look up. The two are mapped in [`detector/CATEGORIES.md`](./detector/CATEGORIES.md); don't "fix" one count to match the other.
+ 
+ ### Content Patterns
+ 
+diff --git a/SKILL.md b/SKILL.md
+index 73dbdf8..85fd850 100644
+--- a/SKILL.md
++++ b/SKILL.md
+@@ -1,7 +1,7 @@
+ ---
+ name: avoid-ai-writing
+ description: Audit and rewrite content to remove AI writing patterns ("AI-isms"). Use this skill when asked to "remove AI-isms," "clean up AI writing," "edit writing for AI patterns," "audit writing for AI tells," or "make this sound less like AI." Supports a detect-only mode, an edit-in-place mode for files, an optional voice profile (casual / professional / technical / warm / blunt), and an iterate-to-convergence pass.
+-version: 3.23.0
++version: 3.24.0
+ license: MIT
+ compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
+ metadata:
+@@ -263,6 +263,48 @@ Multi-word boilerplate that's individually unobjectionable but stacks heavily in
+ | (sustainable) reward emissions | Cite the emission schedule and the sink |
+ | tokenized incentive structures | Describe the actual mechanism (vesting, gauge, bonded LP, etc.) |
+ | designed for long-term [X] | Cut "designed for" — either it is or it isn't. Then state the property |
++| democratizing access to [X] | Name who could not get X before and can now |
++| permissionless innovation | Say what someone can now build without asking |
++| powering the next generation of [X] | Cut. Name the current generation's limit and what lifts it |
++| purpose-built for [X] | Cut "purpose-built" — state the design constraint it was built around |
++| first-of-its-kind | Name the kind, and what came closest before |
++| industry-leading | Cite the benchmark and the field. Same rule as world-class in Tier 3 |
++| battle-tested | Give the load, the duration, and what broke |
++| unlocking new possibilities | Name one possibility |
++| mass adoption | Give the user count or the threshold you mean |
++| the future of finance / money / the internet / work | Cut the frame and make the claim it stands in for |
++| bridging the gap between (X and Y) | Name both sides and what now passes between them |
++| institutional-grade | Name the requirement being met (custody model, audit, SLA) |
++
++Terms of art are deliberately absent from this table. `composability`, `capital
++efficiency`, `trustless`, and `real-world assets` each name a specific mechanism,
++so listing them would flag the writers who use them precisely. Every entry above
++is a wrapper: strip it and the sentence loses no checkable claim.
++
++### Domain-term collision
++
++- A replacement is wrong when the plainer word is already taken. This skill's
++  tables suggest general-purpose alternatives, and in a technical domain some of
++  them collide with a term that has a literal, load-bearing meaning there. The
++  collision reads worse than the word it replaced, because a domain reader parses
++  the technical sense first and then has to back out of it.
++- Worked case, cryptography and zero-knowledge writing: `proof` and `proof point`
++  as generic business nouns ("the pilot is our proof point"). In this domain a
++  proof is a mathematical object the system produces, so a strategy sentence that
++  borrows the word collides with the one meaning readers cannot ignore. Same for
++  `receipts` in the "show your receipts" sense next to a protocol that emits
++  literal receipts.
++- Fix: use the concrete noun. `evidence`, `demo`, `working example`, `shipped
++  piece`, `public artifact`, `data point`, `something people can inspect`.
++  `evidence` is usually the word the sentence meant.
++- Generalize by asking one question before applying any replacement: does the
++  substitute already mean something specific to this audience? `foundation` in a
++  piece about a named Foundation, `bridge` in cross-chain writing, `witness` in
++  ZK, `oracle` in database writing, `agent` in both distributed-systems and LLM
++  contexts. When it does, pick a different word rather than the table's default.
++- Judgment-only, and it has to be. Whether a word collides depends on the
++  audience, which is not in the text — "the proof is in the pipeline" is a tell
++  in a ZK post and unremarkable in a marketing memo.
+ 
+ ### Template phrases (avoid)
+ 
+@@ -441,6 +483,26 @@ These slot-fill constructions signal that a sentence was generated, not written.
+ - Distinct from the bare "worth [verb]ing" word-table entry (a single weak word inside a sentence) and from infomercial engagement hooks (mid-flow teasers like "The catch?"): this is the whole closing line of a social post.
+ - The fix: say *what* the thing is and *who* it's for, then drop the CTA. "This one is worth your time:" becomes "Sarah's breakdown of why context windows leak — the clearest explanation I've found for anyone debugging RAG pipelines." If you can't name a specific reason, the share doesn't need a sign-off at all; let the link stand on its own.
+ 
++### Launch-copy dramatic introduction
++
++- The ad-break reveal: a build-up sentence about the problem, then the product
++  name dropped as its own one-word beat. "We tried four sequencers and every one
++  fell over at the same place. Enter Aegis." The pitch-deck variant compresses
++  the same move into an analogy — "Think Figma meets GitHub."
++- The name is the only content in the beat. A reader who did not already know
++  what the thing does learns nothing from the reveal, so the drama is carrying a
++  sentence that has no claim in it.
++- Fix: replace the reveal with what the thing does. "Aegis batches the proofs so
++  a single sequencer stall can't hold the queue." For the analogy form, name the
++  property you meant to borrow rather than the two companies.
++- Distinct from **Formulaic openings** (broad context before the point) and from
++  **Infomercial engagement hooks** (mid-flow teasers like "The catch?"). This one
++  stages an entrance for a proper noun.
++- Carve-out: "Enter" opening an instruction is not this rule — "Enter your API
++  key", "Enter Y to continue", "Enter the build directory and run make". The
++  detector requires a capitalized name, subtracts key names and form-field nouns,
++  and requires the sentence to end at the name, since the tell is the fragment.
++
+ ### Emotional flatline
+ - AI claims emotions as a structural crutch without conveying them through the writing: "What surprised me most," "I was fascinated to discover," "What struck me was," "I was excited to learn," "The most interesting part," and the bare section-header variant: "Interesting part of the project:" / "Interesting thing here:" / "Interesting aspect:". The header form drops "the most" but does the same job — pre-announcing significance the writing hasn't earned.
+ - Two problems. First, it's tell-don't-show: if the thing is genuinely surprising, the reader should feel that from the content, not from the writer announcing it. Second, these phrases are massively overused as list introductions and transitions. They're filler wearing an emotion costume.
+@@ -464,6 +526,24 @@ These slot-fill constructions signal that a sentence was generated, not written.
+ ### Rhetorical question openers
+ - "But what does this mean for developers?" / "So why should you care?" / "What's next?" — AI uses rhetorical questions to stall before the actual point. If you know the answer, just say it. Rhetorical questions are earned by strong setup, not dropped as section transitions.
+ 
++### Self-QA volley
++
++- The model interviews itself: it poses the question the reader supposedly has,
++  answers in one word, and repeats. "Is it fast? Yes. Is it cheap? Also yes."
++  One pair is ordinary emphasis. Two in a row is the tell, and the answers run
++  in the subject's favor.
++- The volley skips the work. Each question is chosen because the answer is
++  favorable, so the passage reads as coverage while never touching the question a
++  skeptic would actually ask.
++- Fix: cut the questions and state the claims with their evidence. "It clears a
++  block in under 400ms and costs about a tenth of a cent per proof." If a real
++  objection exists, raise it in full and answer it in full.
++- Distinct from **Rhetorical question openers**, which stall once before a point.
++  This is a repeated question-and-answer beat inside a running paragraph.
++- Carve-out: a genuine FAQ. Real FAQs put each question in a heading or a list
++  item, so the detector only fires when the pairs run inline in the same
++  paragraph, separated by spaces rather than line breaks.
++
+ ### Parenthetical hedging
+ - "(and, increasingly, Z)" / "(or, more precisely, Y)" / "(and perhaps more importantly, W)" — AI inserts parenthetical asides to sound nuanced without committing. If the aside matters, give it its own sentence. If it doesn't, cut it.
+ 
+@@ -592,6 +672,8 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
+ - Em dash frequency (above 1 per 1,000 words)
+ - Generic future-narrative closers ("may become one of the most important narratives…")
+ - Social endorsement closers ("This one is worth your time:", "thank me later")
++- Launch-copy dramatic introductions ("Enter Aegis.", "Think Figma meets GitHub.")
++- Self-QA volleys ("Is it fast? Yes. Is it cheap? Also yes.")
+ - Lingering-attention claims ("the line I keep coming back to," "I can't stop thinking about this")
+ - Narrated candor ("I would rather flag this than let you discover it later", "in the interest of full disclosure")
+ - Hedge-stacked predictions ("could potentially," "may eventually")
+@@ -658,6 +740,8 @@ Rules not listed in the table apply at full strength across all profiles.
+ | Tier 3 phrase clustering | strict | strict | strict | **extra strict** | relaxed | skip |
+ | Future-narrative closers | strict | strict | strict | **extra strict** | skip | skip |
+ | Social endorsement closers | strict (the LinkedIn share-post tell) | strict | strict | strict | skip | relaxed (1 OK in a DM) |
++| Launch-copy dramatic introduction | strict | strict | strict | **extra strict** | skip (an install step is not a reveal) | relaxed |
++| Self-QA volley | strict | strict | relaxed (a real FAQ is the register) | **extra strict** | skip (FAQ sections are docs) | skip |
+ | Hedge-stacked predictions | strict | strict | relaxed ("could" is hedged accuracy) | **extra strict** | relaxed | skip |
+ | Real/actual inflation | strict | strict | strict | **extra strict** | relaxed | skip |
+ | Moral-adjective category errors | strict | strict | relaxed | strict | relaxed | skip |
+diff --git a/detector/CATEGORIES.md b/detector/CATEGORIES.md
+index 889ce11..c7015f3 100644
+--- a/detector/CATEGORIES.md
++++ b/detector/CATEGORIES.md
+@@ -6,14 +6,14 @@ the skill, decide here whether it's regex-detectable (give it a detector `type`)
+ or LLM-only judgment (mark it so). When you add a detector `type`, point it back
+ at the skill section it enforces.
+ 
+-The engine exposes 47 issue `type`s (see `TYPE_LABELS` in `patterns.js`). The
++The engine exposes 49 issue `type`s (see `TYPE_LABELS` in `patterns.js`). The
+ skill has more `###` sections than that — the gap is **not** missing coverage,
+ it's rules that are judgment calls a regex can't make. The three groups below
+ account for every entry on both sides.
+ 
+ Three counts coexist on purpose and should not be forced to match: the README's
+ **pattern-category count** (the human-facing prose catalog, derived from SKILL.md
+-and guarded in CI), the engine's **47 `type`s** (which split the vocabulary tiers
++and guarded in CI), the engine's **49 `type`s** (which split the vocabulary tiers
+ and add stylometric signals), and SKILL.md's `###` sections (which also include
+ writer-side tests with no detectable form). The
+ `categories.test.js` enforces the engine ↔ this-file mapping, and checks every
+@@ -35,6 +35,8 @@ prose statement of the engine `type` total against `TYPE_LABELS`.
+ | `hollow-intensifier` | Hollow intensifier | Filler phrases (intensifiers) |
+ | `generic-conclusion` | Generic conclusion | Generic conclusions |
+ | `social-cta-closer` | Engagement-bait closer | Social endorsement closers |
++| `dramatic-intro` | Launch-copy dramatic introduction | Launch-copy dramatic introduction |
++| `self-qa-volley` | Self-QA volley | Self-QA volley |
+ | `future-narrative` | Generic future narrative | Generic future-narrative closers |
+ | `lets-construction` | "Let's" opener | "Let's" constructions |
+ | `reasoning-artifact` | Reasoning artifact | Reasoning chain artifacts |
+@@ -96,6 +98,7 @@ mistake their absence for a coverage gap:
+ - Moral-adjective category errors (including ontological slop on assumptions, gratuitous universal quantifiers)
+ - Invented contrast-pair mirroring
+ - False ranges
++- Domain-term collision *(whether a replacement collides with a term of art depends on the audience, which is not in the text — "the proof is in the pipeline" is a tell in a ZK post and unremarkable in a marketing memo)*
+ - Notability name-dropping
+ - Vague third-party validation
+ - Self-labeling significance
+diff --git a/detector/patterns.js b/detector/patterns.js
+index c84fa89..04fa880 100644
+--- a/detector/patterns.js
++++ b/detector/patterns.js
+@@ -253,6 +253,27 @@ const AIDetector = (() => {
+     /\b(?:sustainable\s+)?reward\s+emissions?\b/gi,
+     /\btokenized\s+incentive\s+structures?\b/gi,
+     /\bdesigned\s+for\s+long-?term\b/gi,
++    // Second batch, added from a year of daily protocol/launch copy. Same
++    // density gate as the first: each is a phrase a human in this genre can
++    // reasonably write once, and the signal is repetition or stacking.
++    //
++    // Terms of art are deliberately absent. `composability`, `capital
++    // efficiency`, `trustless`, and `real-world assets` all name specific
++    // mechanisms in DeFi writing, so listing them would flag the people who
++    // know what they mean. Every entry below is a wrapper: strip it and the
++    // sentence loses no checkable claim.
++    /\bdemocratiz(?:e|es|ing|ed)\s+access\s+to\b/gi,
++    /\bpermissionless\s+innovation\b/gi,
++    /\bpower(?:s|ing)?\s+the\s+next\s+generation\s+of\b/gi,
++    /\bpurpose-?built\s+for\b/gi,
++    /\bfirst-of-its-kind\b/gi,
++    /\bindustry-?leading\b/gi,
++    /\bbattle-?tested\b/gi,
++    /\bunlock(?:s|ing)?\s+new\s+possibilities\b/gi,
++    /\bmass\s+adoption\b/gi,
++    /\bthe\s+future\s+of\s+(?:finance|money|the\s+internet|work)\b/gi,
++    /\bbridging\s+the\s+gap\s+between\b/gi,
++    /\binstitutional-?grade\b/gi,
+   ];
+ 
+   // O(1) lookup from any token form (hyphenated or dashless) to its canonical
+@@ -315,6 +336,12 @@ const AIDetector = (() => {
+     // strong single-hit social tell that the length divisor would
+     // otherwise wash out on a short LinkedIn-length post.
+     'social-cta-closer': 8,
++    // Launch-copy dramatic introduction and the self-QA volley. Both are
++    // single-hit tells on announcement-length posts, so they carry the same
++    // weight as the other social openers the length divisor would wash out.
++    // The volley already requires two beats before it fires at all.
++    'dramatic-intro': 8,
++    'self-qa-volley': 8,
+     'formulaic-opener': 8,
+     // Speculative scenario opener ("Imagine a world where…"). Weighted like
+     // formulaic-opener: a single strong opener tell the length divisor would
+@@ -823,6 +850,56 @@ const AIDetector = (() => {
+     /\btrust\s+me,?\s+(?:on\s+this|you['’]?ll)\b/gi,
+   ];
+ 
++  // ─── Launch-copy dramatic introduction ─────────────────────────────
++  // The ad-break reveal a model reaches for when asked to announce a
++  // product: a build-up sentence, then the name dropped as its own beat.
++  // "Enter Aegis." / "Think Figma meets GitHub."
++  //
++  // Case-sensitive on purpose. Both branches are sentence-initial reveals,
++  // so the capital is part of the shape, and the `i` flag would drag in
++  // mid-sentence "enter" (a verb people use constantly) and lowercase
++  // "think" (ditto).
++  //
++  // The `Enter` branch carries a stop-list because the same three words
++  // open an instruction: "Enter Y to continue.", "Enter Password.",
++  // "Enter Ctrl-C." Interface labels, key names, and the field nouns a form
++  // asks for are subtracted before the match. It also requires the sentence
++  // to END at the name — the tell is the one-beat fragment, and "Enter the
++  // build directory and run make" is a real instruction that keeps going.
++  // Nothing here rescues a product literally named after a stop-listed word;
++  // that is a recall loss taken on purpose, in the safe direction.
++  //
++  // The `Think X meets Y` branch is pitch-deck shorthand ("Think Stripe
++  // meets Twilio") and needs both sides capitalized, which keeps it off the
++  // ordinary verb ("I think Sarah meets the bar here") — that use is not
++  // sentence-initial and has no second capital.
++  const DRAMATIC_INTRO = [
++    /(?<=^|[.!?\n]\s{0,4})Enter\s+(?!(?:Y|N|Yes|No|Ctrl|Cmd|Alt|Shift|Esc|Del|Tab|Return|Enter|Key|Password|Username|Email|Name|Address|Amount|Value|Your|Their|My|The|A|An|This|That|It|If|When|While|Here|Now|Then)\b)[A-Z][\w.-]*(?:\s+[A-Z][\w.-]*){0,2}\s*[.!]/gm,
++    /(?<=^|[.!?\n]\s{0,4})Think\s+[A-Z][\w.-]*\s+meets\s+[A-Z][\w.-]*/gm,
++  ];
++
++  // ─── Self-QA volley ────────────────────────────────────────────────
++  // "Is it fast? Yes. Is it cheap? Also yes." A model interviewing itself:
++  // it poses the question the reader supposedly has, answers in one word,
++  // and repeats. Each pair looks like ordinary emphasis; the tell is the
++  // repetition, so the pattern below is one unit written twice and only
++  // fires on the second beat.
++  //
++  // FAQ sections are the false-positive class, and they are structurally
++  // different: a real FAQ puts each question in a heading or a list item,
++  // which puts a newline between the question and the next one. This
++  // pattern spans the gap with `[ \t]+` only, so it stays inside a single
++  // running paragraph — the shape a person almost never types twice in a
++  // row, and the shape a launch thread is full of.
++  const SELF_QA_UNIT =
++    "(?:Is|Are|Was|Were|Does|Do|Did|Can|Could|Will|Would|Should|Has|Have)\\s+" +
++    "(?:it|this|that|they|he|she|we|I|you|the\\s+\\w+)\\b[^.?!\\n]{0,60}\\?" +
++    "[ \\t]+(?:Yes|No|Yep|Nope|Absolutely|Definitely|Always|Never|Sometimes|" +
++    "Also\\s+yes|Also\\s+no|Kind\\s+of|Sort\\s+of|Not\\s+really|Not\\s+quite)\\b[.!,]";
++  const SELF_QA_VOLLEY = [
++    new RegExp(`${SELF_QA_UNIT}[ \\t]+${SELF_QA_UNIT}`, 'g'),
++  ];
++
+   // ═══ Helpers ═══════════════════════════════════════════════════════
+ 
+   function tokenize(text) {
+@@ -1068,6 +1145,8 @@ const AIDetector = (() => {
+     issues.push(...matchPatterns(text, FUTURE_NARRATIVE, 'future-narrative', 'high'));
+     issues.push(...matchPatterns(text, REAL_ACTUAL_INFLATION, 'real-actual-inflation', 'medium'));
+     issues.push(...matchPatterns(text, SOCIAL_CTA_CLOSER, 'social-cta-closer', 'high'));
++    issues.push(...matchPatterns(text, DRAMATIC_INTRO, 'dramatic-intro', 'high'));
++    issues.push(...matchPatterns(text, SELF_QA_VOLLEY, 'self-qa-volley', 'high'));
+ 
+     // ── Tier 1 v2: formulaic openers + parenthetical hedges ──────────
+     issues.push(...matchPatterns(text, FORMULAIC_OPENERS, 'formulaic-opener', 'high'));
+@@ -1917,6 +1996,8 @@ const AIDetector = (() => {
+     'future-narrative': 'Generic future narrative',
+     'real-actual-inflation': '"Real/actual" inflation',
+     'social-cta-closer': 'Engagement-bait closer',
++    'dramatic-intro': 'Launch-copy dramatic introduction',
++    'self-qa-volley': 'Self-QA volley',
+     'formulaic-opener': 'Formulaic opener',
+     'speculative-opener': 'Speculative scenario opener',
+     'title-case-header': 'Title Case header',
+diff --git a/detector/patterns.test.js b/detector/patterns.test.js
+index 3e428f0..31b6938 100644
+--- a/detector/patterns.test.js
++++ b/detector/patterns.test.js
+@@ -848,6 +848,78 @@ test('v2: social endorsement closer leaves literal-verb human prose alone', () =
+   }
+ });
+ 
++test('v2: launch-copy dramatic introduction fires on both branches', () => {
++  const variants = [
++    'We tried four different sequencers over eighteen months and every one of them fell over at the same place under load. Enter Aegis.',
++    'The prover pipeline was solid but it still needed a surface that non-engineers could operate without filing a ticket. Think Figma meets GitHub.',
++  ];
++  for (const text of variants) {
++    const r = AIDetector.analyzeText(text);
++    const types = new Set(r.issues.map((i) => i.type));
++    assert.ok(types.has('dramatic-intro'), `expected dramatic-intro on: ${text}`);
++  }
++});
++
++test('v2: dramatic introduction leaves "Enter" instructions alone', () => {
++  // The stop-list, the capitalized-name requirement, and the
++  // sentence-must-end-at-the-name anchor exist for exactly these.
++  const clean = [
++    'Enter your API key in the dashboard and the client will pick it up on the next restart without a redeploy.',
++    'Enter Y to continue. The installer then unpacks the archive into the directory you selected on the previous screen.',
++    'Press Enter. The prompt returns and you can run the next command against the staging cluster right away.',
++    'Enter Ctrl-C. That stops the watcher and the file handles are released before the next test run starts up.',
++    'Enter the build directory and run make, then copy the resulting binary onto the box you are provisioning.',
++    'I think Sarah meets the bar for this role and I would like to move her to the final round this week.',
++  ];
++  for (const text of clean) {
++    const r = AIDetector.analyzeText(text);
++    const types = new Set(r.issues.map((i) => i.type));
++    assert.ok(!types.has('dramatic-intro'), `false positive on instruction: ${text}`);
++  }
++});
++
++test('v2: self-QA volley fires only on the second beat', () => {
++  const twoBeats = 'The rollout took about six weeks end to end. Is it fast? Yes. Is it cheap? Also yes. The migration path is where most of the work actually landed for our team.';
++  const types = new Set(AIDetector.analyzeText(twoBeats).issues.map((i) => i.type));
++  assert.ok(types.has('self-qa-volley'), 'expected self-qa-volley on two consecutive beats');
++
++  // One pair is ordinary emphasis and must stay clean, or the rule fires on
++  // every writer who asks and answers a single question mid-paragraph.
++  const onePair = 'The rollout took about six weeks end to end. Is it fast? Yes. The migration path is where most of the work actually landed for our team this quarter.';
++  const oneTypes = new Set(AIDetector.analyzeText(onePair).issues.map((i) => i.type));
++  assert.ok(!oneTypes.has('self-qa-volley'), 'false positive on a single question-and-answer pair');
++});
++
++test('v2: self-QA volley leaves a real FAQ and a qualified answer alone', () => {
++  const clean = [
++    // A real FAQ breaks each question onto its own line; the rule spans
++    // spaces and tabs only, so the newline keeps it clean.
++    'The doc answers the obvious ones for new operators.\nIs it fast? Yes.\nIs it cheap? Also yes.\nIs it ready? Not yet.',
++    // A qualified answer is a real answer, not a one-word flatterer.
++    'Is it fast? Yes, on the hot path, though the cold start still costs us about four hundred milliseconds on every single deploy we ship.',
++  ];
++  for (const text of clean) {
++    const r = AIDetector.analyzeText(text);
++    const types = new Set(r.issues.map((i) => i.type));
++    assert.ok(!types.has('self-qa-volley'), `false positive on: ${text.slice(0, 48)}`);
++  }
++});
++
++test('v2: second-batch Tier 3 phrases are density-gated, not single-hit', () => {
++  // One use of one phrase must stay clean — the whole point of the tier.
++  const single = 'The custody model is institutional-grade, which for us means the keys sit in an HSM and every withdrawal needs two signers on separate hardware.';
++  const singleTypes = new Set(AIDetector.analyzeText(single).issues.map((i) => i.type));
++  assert.ok(!singleTypes.has('tier3-phrase'), 'false positive on a single new-phrase use');
++
++  // Three distinct phrases stacked is the cluster shape the tier exists for.
++  const cluster = 'Our platform is purpose-built for scale and battle-tested across two market cycles. We are democratizing access to yield that used to sit behind a private bank relationship, and the roadmap runs through mass adoption.';
++  const clusterTypes = new Set(AIDetector.analyzeText(cluster).issues.map((i) => i.type));
++  assert.ok(
++    clusterTypes.has('tier3-phrase-cluster') || clusterTypes.has('tier3-phrase'),
++    'expected the new phrases to reach the Tier 3 phrase cluster'
++  );
++});
++
+ test('v2: trinary output present + FN-biased for ambiguous text', () => {
+   // A plain human bug-report should not get AI_ONLY even if score lifts.
+   const text = 'The build broke again this morning. Rolled back the auth refactor and tests pass now. Still need to figure out why the token refresh path hits a 401 for users on Safari but not Firefox — probably a cookie scope issue but I want to confirm before shipping a fix.';
+diff --git a/package.json b/package.json
+index 3bec239..3a2f073 100644
+--- a/package.json
++++ b/package.json
+@@ -1,6 +1,6 @@
+ {
+   "name": "avoid-ai-writing-detector",
+-  "version": "3.23.0",
++  "version": "3.24.0",
+   "description": "Deterministic detection engine for the Avoid AI Writing skill — pattern + stylometric analysis of AI-generated text.",
+   "license": "MIT",
+   "repository": {
+diff --git a/plugins/avoid-ai-writing/.claude-plugin/plugin.json b/plugins/avoid-ai-writing/.claude-plugin/plugin.json
+index 5d80861..d3413fd 100644
+--- a/plugins/avoid-ai-writing/.claude-plugin/plugin.json
++++ b/plugins/avoid-ai-writing/.claude-plugin/plugin.json
+@@ -1,7 +1,7 @@
+ {
+   "name": "avoid-ai-writing",
+   "description": "Audit & rewrite content to remove AI writing patterns (\"AI-isms\"). Supports detect-only and edit-in-place modes, voice profiles, and iterate-to-convergence.",
+-  "version": "3.23.0",
++  "version": "3.24.0",
+   "author": {
+     "name": "Conor Bronsdon"
+   },
+diff --git a/plugins/avoid-ai-writing/skills/avoid-ai-writing/SKILL.md b/plugins/avoid-ai-writing/skills/avoid-ai-writing/SKILL.md
+index 73dbdf8..85fd850 100644
+--- a/plugins/avoid-ai-writing/skills/avoid-ai-writing/SKILL.md
++++ b/plugins/avoid-ai-writing/skills/avoid-ai-writing/SKILL.md
+@@ -1,7 +1,7 @@
+ ---
+ name: avoid-ai-writing
+ description: Audit and rewrite content to remove AI writing patterns ("AI-isms"). Use this skill when asked to "remove AI-isms," "clean up AI writing," "edit writing for AI patterns," "audit writing for AI tells," or "make this sound less like AI." Supports a detect-only mode, an edit-in-place mode for files, an optional voice profile (casual / professional / technical / warm / blunt), and an iterate-to-convergence pass.
+-version: 3.23.0
++version: 3.24.0
+ license: MIT
+ compatibility: Any AI coding assistant that supports agentskills.io SKILL.md format (Claude Code, Cursor, VS Code Copilot, Hermes Agent, OpenHands, etc.) or OpenClaw. No external tools or APIs required.
+ metadata:
+@@ -263,6 +263,48 @@ Multi-word boilerplate that's individually unobjectionable but stacks heavily in
+ | (sustainable) reward emissions | Cite the emission schedule and the sink |
+ | tokenized incentive structures | Describe the actual mechanism (vesting, gauge, bonded LP, etc.) |
+ | designed for long-term [X] | Cut "designed for" — either it is or it isn't. Then state the property |
++| democratizing access to [X] | Name who could not get X before and can now |
++| permissionless innovation | Say what someone can now build without asking |
++| powering the next generation of [X] | Cut. Name the current generation's limit and what lifts it |
++| purpose-built for [X] | Cut "purpose-built" — state the design constraint it was built around |
++| first-of-its-kind | Name the kind, and what came closest before |
++| industry-leading | Cite the benchmark and the field. Same rule as world-class in Tier 3 |
++| battle-tested | Give the load, the duration, and what broke |
++| unlocking new possibilities | Name one possibility |
++| mass adoption | Give the user count or the threshold you mean |
++| the future of finance / money / the internet / work | Cut the frame and make the claim it stands in for |
++| bridging the gap between (X and Y) | Name both sides and what now passes between them |
++| institutional-grade | Name the requirement being met (custody model, audit, SLA) |
++
++Terms of art are deliberately absent from this table. `composability`, `capital
++efficiency`, `trustless`, and `real-world assets` each name a specific mechanism,
++so listing them would flag the writers who use them precisely. Every entry above
++is a wrapper: strip it and the sentence loses no checkable claim.
++
++### Domain-term collision
++
++- A replacement is wrong when the plainer word is already taken. This skill's
++  tables suggest general-purpose alternatives, and in a technical domain some of
++  them collide with a term that has a literal, load-bearing meaning there. The
++  collision reads worse than the word it replaced, because a domain reader parses
++  the technical sense first and then has to back out of it.
++- Worked case, cryptography and zero-knowledge writing: `proof` and `proof point`
++  as generic business nouns ("the pilot is our proof point"). In this domain a
++  proof is a mathematical object the system produces, so a strategy sentence that
++  borrows the word collides with the one meaning readers cannot ignore. Same for
++  `receipts` in the "show your receipts" sense next to a protocol that emits
++  literal receipts.
++- Fix: use the concrete noun. `evidence`, `demo`, `working example`, `shipped
++  piece`, `public artifact`, `data point`, `something people can inspect`.
++  `evidence` is usually the word the sentence meant.
++- Generalize by asking one question before applying any replacement: does the
++  substitute already mean something specific to this audience? `foundation` in a
++  piece about a named Foundation, `bridge` in cross-chain writing, `witness` in
++  ZK, `oracle` in database writing, `agent` in both distributed-systems and LLM
++  contexts. When it does, pick a different word rather than the table's default.
++- Judgment-only, and it has to be. Whether a word collides depends on the
++  audience, which is not in the text — "the proof is in the pipeline" is a tell
++  in a ZK post and unremarkable in a marketing memo.
+ 
+ ### Template phrases (avoid)
+ 
+@@ -441,6 +483,26 @@ These slot-fill constructions signal that a sentence was generated, not written.
+ - Distinct from the bare "worth [verb]ing" word-table entry (a single weak word inside a sentence) and from infomercial engagement hooks (mid-flow teasers like "The catch?"): this is the whole closing line of a social post.
+ - The fix: say *what* the thing is and *who* it's for, then drop the CTA. "This one is worth your time:" becomes "Sarah's breakdown of why context windows leak — the clearest explanation I've found for anyone debugging RAG pipelines." If you can't name a specific reason, the share doesn't need a sign-off at all; let the link stand on its own.
+ 
++### Launch-copy dramatic introduction
++
++- The ad-break reveal: a build-up sentence about the problem, then the product
++  name dropped as its own one-word beat. "We tried four sequencers and every one
++  fell over at the same place. Enter Aegis." The pitch-deck variant compresses
++  the same move into an analogy — "Think Figma meets GitHub."
++- The name is the only content in the beat. A reader who did not already know
++  what the thing does learns nothing from the reveal, so the drama is carrying a
++  sentence that has no claim in it.
++- Fix: replace the reveal with what the thing does. "Aegis batches the proofs so
++  a single sequencer stall can't hold the queue." For the analogy form, name the
++  property you meant to borrow rather than the two companies.
++- Distinct from **Formulaic openings** (broad context before the point) and from
++  **Infomercial engagement hooks** (mid-flow teasers like "The catch?"). This one
++  stages an entrance for a proper noun.
++- Carve-out: "Enter" opening an instruction is not this rule — "Enter your API
++  key", "Enter Y to continue", "Enter the build directory and run make". The
++  detector requires a capitalized name, subtracts key names and form-field nouns,
++  and requires the sentence to end at the name, since the tell is the fragment.
++
+ ### Emotional flatline
+ - AI claims emotions as a structural crutch without conveying them through the writing: "What surprised me most," "I was fascinated to discover," "What struck me was," "I was excited to learn," "The most interesting part," and the bare section-header variant: "Interesting part of the project:" / "Interesting thing here:" / "Interesting aspect:". The header form drops "the most" but does the same job — pre-announcing significance the writing hasn't earned.
+ - Two problems. First, it's tell-don't-show: if the thing is genuinely surprising, the reader should feel that from the content, not from the writer announcing it. Second, these phrases are massively overused as list introductions and transitions. They're filler wearing an emotion costume.
+@@ -464,6 +526,24 @@ These slot-fill constructions signal that a sentence was generated, not written.
+ ### Rhetorical question openers
+ - "But what does this mean for developers?" / "So why should you care?" / "What's next?" — AI uses rhetorical questions to stall before the actual point. If you know the answer, just say it. Rhetorical questions are earned by strong setup, not dropped as section transitions.
+ 
++### Self-QA volley
++
++- The model interviews itself: it poses the question the reader supposedly has,
++  answers in one word, and repeats. "Is it fast? Yes. Is it cheap? Also yes."
++  One pair is ordinary emphasis. Two in a row is the tell, and the answers run
++  in the subject's favor.
++- The volley skips the work. Each question is chosen because the answer is
++  favorable, so the passage reads as coverage while never touching the question a
++  skeptic would actually ask.
++- Fix: cut the questions and state the claims with their evidence. "It clears a
++  block in under 400ms and costs about a tenth of a cent per proof." If a real
++  objection exists, raise it in full and answer it in full.
++- Distinct from **Rhetorical question openers**, which stall once before a point.
++  This is a repeated question-and-answer beat inside a running paragraph.
++- Carve-out: a genuine FAQ. Real FAQs put each question in a heading or a list
++  item, so the detector only fires when the pairs run inline in the same
++  paragraph, separated by spaces rather than line breaks.
++
+ ### Parenthetical hedging
+ - "(and, increasingly, Z)" / "(or, more precisely, Y)" / "(and perhaps more importantly, W)" — AI inserts parenthetical asides to sound nuanced without committing. If the aside matters, give it its own sentence. If it doesn't, cut it.
+ 
+@@ -592,6 +672,8 @@ Not all AI-isms are equal. When doing a quick pass or triaging a large document,
+ - Em dash frequency (above 1 per 1,000 words)
+ - Generic future-narrative closers ("may become one of the most important narratives…")
+ - Social endorsement closers ("This one is worth your time:", "thank me later")
++- Launch-copy dramatic introductions ("Enter Aegis.", "Think Figma meets GitHub.")
++- Self-QA volleys ("Is it fast? Yes. Is it cheap? Also yes.")
+ - Lingering-attention claims ("the line I keep coming back to," "I can't stop thinking about this")
+ - Narrated candor ("I would rather flag this than let you discover it later", "in the interest of full disclosure")
+ - Hedge-stacked predictions ("could potentially," "may eventually")
+@@ -658,6 +740,8 @@ Rules not listed in the table apply at full strength across all profiles.
+ | Tier 3 phrase clustering | strict | strict | strict | **extra strict** | relaxed | skip |
+ | Future-narrative closers | strict | strict | strict | **extra strict** | skip | skip |
+ | Social endorsement closers | strict (the LinkedIn share-post tell) | strict | strict | strict | skip | relaxed (1 OK in a DM) |
++| Launch-copy dramatic introduction | strict | strict | strict | **extra strict** | skip (an install step is not a reveal) | relaxed |
++| Self-QA volley | strict | strict | relaxed (a real FAQ is the register) | **extra strict** | skip (FAQ sections are docs) | skip |
+ | Hedge-stacked predictions | strict | strict | relaxed ("could" is hedged accuracy) | **extra strict** | relaxed | skip |
+ | Real/actual inflation | strict | strict | strict | **extra strict** | relaxed | skip |
+ | Moral-adjective category errors | strict | strict | relaxed | strict | relaxed | skip |
+-- 
+2.43.0
+
