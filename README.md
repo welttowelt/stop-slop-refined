@@ -2,7 +2,7 @@
 
 A public writing skill for plain, source-safe prose that removes formulaic AI writing without flattening meaning or voice.
 
-[Open the interactive guide](https://welttowelt.github.io/stop-slop-refined/) or install the skill locally.
+[Open the interactive guide](https://odinfree.github.io/stop-slop-refined/) or install the skill locally.
 
 ## Version 3.1.1
 
@@ -44,14 +44,14 @@ stop-slop-refined/
 
 ```bash
 mkdir -p ~/.claude/skills
-git clone https://github.com/welttowelt/stop-slop-refined.git ~/.claude/skills/stop-slop
+git clone https://github.com/odinfree/stop-slop-refined.git ~/.claude/skills/stop-slop
 ```
 
 ### Codex
 
 ```bash
 mkdir -p ~/.codex/skills
-git clone https://github.com/welttowelt/stop-slop-refined.git ~/.codex/skills/stop-slop
+git clone https://github.com/odinfree/stop-slop-refined.git ~/.codex/skills/stop-slop
 ```
 
 ### ChatGPT or Claude projects
