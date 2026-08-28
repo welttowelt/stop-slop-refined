@@ -323,3 +323,14 @@ Use these cases after changing SKILL.md, references/patterns.md, references/word
 **Pass:** Strip the utm parameter, the orphan bracket citations, and the trailing Sources block before any style edit.
 
 **Fail:** Leave any of the three, or fix the style while the utm_source survives.
+
+## Case 14. Enforce the hard house word ban
+
+**Draft:**
+> The dashboard surfaces failed transactions on a review surface.
+
+**Profile:** Any drafted prose.
+
+**Pass:** Write `The dashboard shows failed transactions on the review page.`
+
+**Fail:** Keep either banned spelling as a technical-writing exception.

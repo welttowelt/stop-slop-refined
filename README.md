@@ -4,7 +4,7 @@ A public writing skill for plain, source-safe prose that removes formulaic AI wr
 
 [Open the interactive guide](https://welttowelt.github.io/stop-slop-refined/) or install the skill locally.
 
-## Version 3.1
+## Version 3.1.1
 
 - Uses plain writing as the neutral baseline.
 - Preserves claims, uncertainty, source boundaries, and necessary technical terms.

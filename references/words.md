@@ -12,6 +12,8 @@ Three house-rule tiers. Use them to prioritize edits, not to identify who wrote 
 
 Technical-writing exemption. In dev docs and technical explanations, robust, comprehensive, seamless, ecosystem, leverage (the platform or API sense), facilitate, underpin, and streamline are legitimate working terms. Keep them there. Delve, tapestry, beacon, embark, testament to, and game-changer stay flagged everywhere.
 
+Hard house bans. `matters`, `surface`, and `surfaces` do not appear in drafted prose. Preserve them only inside source quotations, proper names, filenames, code, or required syntax.
+
 ---
 
 ## Tier 1 — Replace by default
@@ -19,6 +21,7 @@ Technical-writing exemption. In dev docs and technical explanations, robust, com
 | Replace | With |
 |---|---|
 | matters / it matters / why this matters (hard house ban, every use) | counts, is the point, changes the outcome, decides X, or restate the consequence directly |
+| surface / surfaces (hard house ban, every use) | show, reveal, find, raise, page, screen, channel, interface, endpoint, boundary, area, or name the exact object or action |
 | delve / delve into | explore, dig into, look at |
 | landscape (metaphor) | field, space, industry, world |
 | tapestry | (describe the actual complexity) |
@@ -365,6 +368,7 @@ In neutral prose, do not open a paragraph with "So" or a sentence with "Look,". 
 
 ## Changelog
 
+- 2026-08-28 — added the `surface` and `surfaces` hard house ban across the vault, local skill mirrors, memory preference, public package, and detector.
 - 2026-07-11 — added the `matters` hard ban, current-era tells (enhance, highlight, plus quietly in Patterns), the crypto boilerplate cluster, meta-commentary and email boilerplate groups, and business-jargon idioms. Pruned replacement chains that landed on flagged words (unleash, pivotal, testament to, underscores, crucial). Sweep sources logged in SKILL.md (Catalog refresh).
 - 2026-07-11 (second pass) — technical-writing word exemption ported from the merged skill.
 - 2026-07-10 — full cluster refresh.

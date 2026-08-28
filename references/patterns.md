@@ -214,7 +214,7 @@ Local examples:
 
 - "Starknet is fast and scalable." -> name the buyer loop, constraint, shipped piece, or demo.
 - "Privacy will unlock institutional adoption." -> name the compliance bottleneck, disclosure boundary, or operational tradeoff.
-- "Agents need verifiable identity." -> name the failure mode, actor, and verification surface.
+- "Agents need verifiable identity." -> name the failure mode, actor, and verification point.
 
 ### Domain term collision
 Using `receipt`, `proof`, or `proof point` as generic strategy language in Starknet, ZK, crypto, or post-quantum prose.

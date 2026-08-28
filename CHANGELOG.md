@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.1 - 2026-08-28
+
+### Changed
+
+- Added the `surface` and `surfaces` hard house ban to the portable skill, public reference library, and browser detector.
+
 ## 3.1.0 - 2026-07-11
 
 ### Changed

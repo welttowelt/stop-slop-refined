@@ -7,6 +7,10 @@ window.STOP_SLOP_DATA = {
       "counts, is the point, changes the outcome, decides X, or restate the consequence directly"
     ],
     [
+      "surface / surfaces (hard house ban, every use)",
+      "show, reveal, find, raise, page, screen, channel, interface, endpoint, boundary, area, or name the exact object or action"
+    ],
+    [
       "delve / delve into",
       "explore, dig into, look at"
     ],

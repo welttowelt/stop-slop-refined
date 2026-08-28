@@ -1,11 +1,11 @@
 ---
 name: stop-slop
 description: Audit and rewrite prose to remove AI writing patterns. Merges the best rules from hardikpandya/stop-slop, conorbronsdon/avoid-ai-writing, jalaalrd/anti-ai-slop-writing, blader/humanizer, and Shreya Shankar's plain-writing skill. Use when drafting, editing, or reviewing any text — tweets, emails, articles, docs, posts — where the output must not read as AI-generated. Supports detect-only mode.
-version: 3.1.0
 license: MIT
 metadata:
+  version: 3.1.1
   trigger: Writing, editing, or reviewing prose; "make this sound human"; "anti-slop"; "remove AI tells"; "audit this"
-  updated: "2026-07-11"
+  updated: "2026-08-28"
   sources:
     - hardikpandya/stop-slop
     - conorbronsdon/avoid-ai-writing

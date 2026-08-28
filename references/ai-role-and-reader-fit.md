@@ -19,7 +19,7 @@ Fast route:
 ```text
 AI-first draft -> anti-anchoring.
 Social-distribution draft -> reader-fit.
-Public long-form -> reader-fit only for opening, ending, share copy, CTA, and reply surfaces.
+Public long-form -> reader-fit only for opening, ending, share copy, CTA, and replies.
 Final prose -> Stop Slop cleanup.
 Personal voice -> voice overlay after those gates.
 ```
@@ -41,14 +41,14 @@ Use this router:
 | Task needs many angles | Divergence generator (house method) | Ask for 2-4 genuinely different centers, each with a different audience, tension, evidence type, and risk |
 | Draft already exists | Critique-before-rewrite | Make AI name problems before improving text |
 | AI wrote the first draft | Anchor detector | Do not line edit yet; rebuild around the non-average human claim |
-| Draft provenance is unknown | Light center-check | Do not guess authorship from surface tells; check the center before line edits |
+| Draft provenance is unknown | Light center-check | Do not guess authorship from visible tells; check the center before line edits |
 | Social post feels clean but off | Reader-fit auditor | Check social presence, platform fit, and conversational context |
 
 Below baseline does not mean AI-first by default. The strongest evidence here is for AI feedback on the human's own draft.
 
 AI-first is acceptable for low-stakes boilerplate, neutral summaries, extraction, outlines, and drafts where voice or creative angle is not the asset. Still run Stop Slop before publication.
 
-If you do not know who chose the first creative shape, do not infer authorship from surface tells. Ask once if the workflow allows. If you cannot ask, label provenance as unknown and run a light center-check before line edits:
+If you do not know who chose the first creative shape, do not infer authorship from visible tells. Ask once if the workflow allows. If you cannot ask, label provenance as unknown and run a light center-check before line edits:
 
 ```text
 1. What is the central claim?
@@ -177,7 +177,7 @@ For Starknet-facing claims, check product, legal, roadmap, role-boundary, or tec
 
 Run this after coherence and originality, before final Stop Slop, for social posts, threads, replies, launch snippets, and share copy.
 
-For public long-form pieces, use reader-fit on openings, endings, share copy, CTAs, and reply surfaces. Do not use Radivojevic as a reason to make technical blog bodies casual. Route those through evidence, information flow, argument function, and source checks first.
+For public long-form pieces, use reader-fit on openings, endings, share copy, CTAs, and replies. Do not use Radivojevic as a reason to make technical blog bodies casual. Route those through evidence, information flow, argument function, and source checks first.
 
 ```text
 Does a situated person seem to be speaking here?
@@ -236,7 +236,7 @@ Local model-average examples:
 |---|---|
 | "Starknet is fast and scalable." | Name the buyer loop, constraint, shipped piece, or demo that changes the decision. |
 | "Privacy will unlock institutional adoption." | Name the compliance bottleneck, disclosure boundary, or operational tradeoff. |
-| "Agents need verifiable identity." | Name the failure mode, actor, and verification surface. |
+| "Agents need verifiable identity." | Name the failure mode, actor, and verification point. |
 
 ## Use with a personal voice overlay
 
