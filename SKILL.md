@@ -229,4 +229,4 @@ AI tells are era-stamped and rotate as model generations change. Delve-era words
 - Date-stamp additions in the Words changelog so stale bans stay visible.
 - Keep a short retired list for bans that start eating natural vocabulary. Watch `ecosystem`, which is literal job language for a Head of Ecosystem.
 
-Last sweep 2026-07-11, against conorbronsdon/avoid-ai-writing v3.15.0, hardikpandya/stop-slop, blader/humanizer, jalaalrd/anti-ai-slop-writing, and Shreya Shankar's plain-writing skill.
+Last sweep 2026-08-04, against conorbronsdon/avoid-ai-writing v3.23.0, hardikpandya/stop-slop, blader/humanizer, jalaalrd/anti-ai-slop-writing, and Shreya Shankar's plain-writing skill. That sweep runs both directions: what the upstream catalogs have that this one lacks, and what this one has that they lack. The return leg is in [upstream/avoid-ai-writing](upstream/avoid-ai-writing).
